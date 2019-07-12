@@ -619,7 +619,7 @@ class KlineController extends CommonController
     public function startRedis()
     {
         //$markets = ['qtum_usdt', 'bch_usdt', 'etc_usdt', 'bts_usdt', 'ae_usdt', 'doge_usdt', 'hc_usdt', 'zrx_usdt','pass_usdt'];
-        $markets = ['yhet_usdt'];
+        $markets = ['bys_usdt'];
         foreach ($markets as $market) {
             //$market = 'pass_usdt';
             $keys = $this->getKeysByMarket($market);
