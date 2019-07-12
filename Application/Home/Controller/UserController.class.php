@@ -107,6 +107,8 @@ class UserController extends HomeController
     //忘记交易密码
     public function fgpaypassword($newpaypassword, $phone, $verify)
     {
+        $this->error('体验服不能修改交易密码');
+
         if (!userid()) {
             $this->error('请先登录！');
         }
@@ -175,6 +177,8 @@ class UserController extends HomeController
 
     public function uppassword($oldpassword, $newpassword, $repassword)
     {
+        $this->error('体验服不能修改登录密码');
+
         if (!userid()) {
             $this->error('请先登录！');
         }
@@ -224,6 +228,8 @@ class UserController extends HomeController
 
     public function uppaypassword($oldpaypassword, $newpaypassword, $repaypassword)
     {
+        $this->error('体验服不能修改交易密码');
+
         if (!userid()) {
             $this->error('请先登录！');
         }
