@@ -144,6 +144,8 @@ class UserburseController extends HomeController
      */
     public function mycz()
     {
+        $this->error('体验服暂不开放充值');
+
         $market = $_GET['market'];
 
         $number = $this->getnumber($market);
@@ -335,6 +337,8 @@ class UserburseController extends HomeController
      */
     public function mytx()
     {
+        $this->error('体验服暂不开放提现');
+
         //检测用户有没有绑定该币种的钱包地址
         $market = $_GET['market'];
         $number = $this->getnumber($market);
