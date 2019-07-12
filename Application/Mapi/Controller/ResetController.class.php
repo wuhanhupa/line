@@ -22,6 +22,8 @@ class ResetController extends CommonController
                     $res = M('UserCoin')->where(['id' => $value['id']])->save([
                         $coin['name'] => 99999999
                     ]);
+
+                    echo $res;
                 }
             }
         }
