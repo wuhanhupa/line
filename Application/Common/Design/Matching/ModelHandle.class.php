@@ -72,7 +72,8 @@ class ModelHandle
         $data['fee_sell'] = 0; //卖出手续费
         $data['addtime'] = time(); //添加时间
         $data['status'] = 1; //状态
-
+        $data['sort'] = 0;
+        $data['endtime'] = time();
         return M('TradeLog')->add($data);
     }
 
