@@ -737,7 +737,8 @@ class KlineController extends CommonController
     public function setVolumeToRedisByHand()
     {
         //查询所有在线币种
-        $markets = M('Market')->where(['status' => 1])->field('name')->select();
+        //$markets = M('Market')->where(['status' => 1])->field('name')->select();
+        $markets = ['bys_usdt'];
         //连接redis
         $redis = $this->connectRedis();
         //遍历处理
