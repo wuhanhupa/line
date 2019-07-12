@@ -1,0 +1,88 @@
+<include file="Public:header"/>
+<div id="main-content">
+    <div id="top-alert" class="fixed alert alert-error" style="display: none;">
+        <button class="close fixed" style="margin-top: 4px;">&times;</button>
+        <div class="alert-content">警告内容</div>
+    </div>
+    <div id="main" class="main">
+        <div class="main-title-h">
+            <span class="h1-title">搬币机器人当前余额</span>
+        </div>
+
+        <div class="data-table table-striped">
+            <table class="">
+                <thead>
+                <tr>
+                    <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                    <th class="">币种</th>
+                    <th class="">可用余额</th>
+                    <th class="">冻结余额</th>
+                    <th width="">时间</th>
+                    <!--<th width="">操作</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <notempty name="data">
+                    <volist name="data" id="vo">
+                        <tr>
+                            <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}"/></td>
+                            <eq name="vo.coin" value="USDT">
+                                <td><span style="color:red;">{$vo.coin}</span></td>
+                                <td><span style="color:red;">{$vo.available}</span></td>
+                            <else/>
+                                <td>{$vo.coin}</td>
+                                <td>{$vo.available}</td>
+                            </eq>
+                            <td>{$vo.freez}</td>
+                            <td>{$vo.timestamp|get_microtime_format}</td>
+                            <!--<td>
+                                <eq name="vo.coin" value="USDT">
+                                    <button class="btn btn-xs submit-btn ajax-post" id="shenhe" type="button" target-form="form-horizontal">短信告警</button>
+                                </eq>
+                            </td>-->
+                        </tr>
+                    </volist>
+                    <else/>
+                    <td colspan="12" class="text-center">Oh! 暂时还没有内容!</td>
+                </notempty>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<include file="Public:footer"/>
+<block name="script">
+    <script type="text/javascript" charset="utf-8">
+        //导航高亮
+        highlight_subnav("{:U('Finance/robot')}");
+
+        /*$("#shenhe").click(function () {
+            layer.open({
+            content: '是否发生告警短信？'
+            ,btn: ['发送', '不发送']
+            ,yes: function(index, layero){
+                shehe(1);
+            }
+            ,btn2: function(index, layero){
+                
+            },cancel: function(){ 
+                //右上角关闭回调
+            
+                //return false 开启该代码可禁止点击该按钮关闭
+            }
+            });		
+        });
+        function shehe(type){
+            $.ajax({
+                type:'post',
+                url:"{:U('Admin/Finance/notice')}",
+                data:{
+                    type:type
+                },
+                success:function(ret){
+                    return layer.msg(ret.info);
+                }
+            })
+        }*/
+    </script>
+</block>

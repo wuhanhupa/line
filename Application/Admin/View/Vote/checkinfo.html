@@ -1,0 +1,171 @@
+<include file="Public:header"/>
+<div id="main-content">
+    <div id="top-alert" class="fixed alert alert-error" style="display: none;">
+        <button class="close fixed" style="margin-top: 4px;">&times;</button>
+        <div class="alert-content">警告内容</div>
+    </div>
+    <div id="main" class="main">
+        <div class="main-title-h">
+            <span class="h1-title">上币申请审核详情</span>
+        </div>
+
+        <div class="tab-wrap">
+            <div class="tab-content">
+                <form id="form" class="form-horizontal">
+                    <div id="tab" class="tab-pane in tab">
+                        <div class="form-item cf">
+                            <table>
+                                <tr class="controls">
+                                    <td class="item-label">用户名 :</td>
+                                    <td width="400px;"><input type="text" class="form-control" value="{$user.username}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">联系方式 :</td>
+                                    <td><input type="text" class="form-control" value="{$user.email}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">项目名 :</td>
+                                    <td><input type="text" class="form-control" value="{$user.projectname}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">代币名 :</td>
+                                    <td><input type="text" class="form-control" value="{$user.symbol}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">官方网站 :</td>
+                                    <td><input type="text" class="form-control" value="{$user.website}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">白皮书链接 :</td>
+                                    <td><input type="text" class="form-control" value="{$user.whitepaperlink}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">团队介绍 :</td>
+                                    <td><input type="text" class="form-control" value="{$user.teaminfo}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">顾问信息 :</td>
+                                    <td><input type="text" class="form-control" value="{$user.advisorinfo}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">ICO状态 :</td>
+                                    <td><input type="text" class="form-control" value="{$user.icostatus}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                        <td class="item-label">代币总量 :</td>
+                                        <td><input type="text" class="form-control" value="{$user.symboltotal}"></td>
+                                        <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                            <td class="item-label">代币分配机制 :</td>
+                                            <td><input type="text" class="form-control" value="{$user.dismechan}"></td>
+                                            <td class="item-note"></td>
+                                </tr>
+                               <tr class="controls">
+                                                <td class="item-label">流通代币量 :</td>
+                                                <td><input type="text" class="form-control" value="{$user.symbolcisupply}"></td>
+                                                <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                        <td class="item-label">已上交易所 :</td>
+                                        <td><input type="text" class="form-control" value="{$user.marketlistd}"></td>
+                                        <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                        <td class="item-label">24小时交易量 :</td>
+                                        <td><input type="text" class="form-control" value="{$user.tradevolume}"></td>
+                                        <td class="item-note"></td>
+                                 </tr>
+                                 <tr class="controls">
+                                        <td class="item-label">私募信息 :</td>
+                                        <td><input type="text" class="form-control" value="{$user.privatesaleinfo}"></td>
+                                        <td class="item-note"></td>
+                                 </tr>
+                                 <tr class="controls">
+                                        <td class="item-label">项目开发进度 :</td>
+                                        <td><input type="text" class="form-control" value="{$user.projectprogress}"></td>
+                                        <td class="item-note"></td>
+                                 </tr>
+                                 <tr class="controls">
+                                        <td class="item-label">产品用户数量 :</td>
+                                        <td><input type="text" class="form-control" value="{$user.numberusers}"></td>
+                                        <td class="item-note"></td>
+                                 </tr>  
+                                 <tr class="controls">
+                                        <td class="item-label">社区及其用户数量 :</td>
+                                        <td><input type="text" class="form-control" value="{$user.squsernum}"></td>
+                                        <td class="item-note"></td>
+                                 </tr>
+                                 <tr class="controls">
+                                        <td class="item-label">源代码是否公开 :</td>
+                                        <td><input type="text" class="form-control" value="{$user.codeopensource}"></td>
+                                        <td class="item-note"></td>
+                                 </tr>
+                                 <tr class="controls">
+                                        <td class="item-label">公开地址 :</td>
+                                        <td><input type="text" class="form-control" value="{$user.opensourcelink}"></td>
+                                        <td class="item-note"></td>
+                                 </tr>            
+                                <tr class="controls">
+                                    <td class="item-label">申请时间 :</td>
+                                    <td><input type="text" class="form-control" value="{$user.addtime}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                
+                                <tr class="controls">
+                                    <td class="item-label"></td>
+                                    <td>
+                                        <div class="form-item cf">
+                                            <button class="btn submit-btn ajax-post" onclick="shehe({$user['id']}, 2)"
+                                                    target-form="form-horizontal">通 过
+                                            </button>
+                                             <button class="btn btn-return ajax-post" onclick="shehe({$user['id']}, 3)"
+                                                    target-form="form-horizontal">驳 回
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function shehe(id,status){
+        $.ajax({
+            type:'post',
+            url:"{:U('Admin/Vote/shenhe')}",
+            data:{
+                id:id,
+                status:status
+            },
+            success:function(ret){
+                layer.msg(ret.info);
+                if(ret.status==1000) {
+                    window.location.href="{:U('Admin/Vote/index')}";
+                }
+            }
+        })
+    }
+</script>
+<script type="text/javascript">
+    $(function () {
+        //主导航高亮
+        $('.user-box').addClass('current');
+        //边导航高亮
+        $('.user-index').addClass('current');
+    });
+</script>
+<include file="Public:footer"/>

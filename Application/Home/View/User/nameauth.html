@@ -1,0 +1,300 @@
+<include file="Public:header" />
+<div class="autobox">
+    <div class="now">
+        <a href="/" class="orange">首页</a> &gt; <a href="/user/index.html" class="orange">安全中心 </a> &gt; 实名认证
+    </div>
+    <div class="assets_center clear po_re zin70">
+        <!--左侧菜单-->
+        <include file="User:left" />
+        <!--右侧内容-->
+        <div class="assets_content w900 right bg_w assets-content">
+            <div class="ui-title">
+                <span>实名认证</span>
+            </div>
+            <include file="Public:alert" />
+            <form id="form-nameauth">
+                <div class="band_succ" style="padding-left: 76px;">
+                    <if condition="$user.ident_status eq 2 ">
+                        <div class="ui-band ui-band-success"><i class="ui-icon ui-icon-success"></i>已通过实名认证</div>
+                    <elseif condition="$user.ident_status eq 1"/>
+                        <div class="ui-band ui-band-warning"><i class="ui-icon ui-icon-warning"></i>审核中</div>
+                    <elseif condition="$user.ident_status eq 3"/>
+                        <div class="ui-band ui-band-warning"><i class="ui-icon ui-icon-warning"></i>审核未通过，请重新提交</div>
+                    <else />
+                        <div class="ui-band ui-band-error"><i class="ui-icon ui-icon-error"></i>未进行审核</div>
+                    </if> 
+                </div>
+                <div class="set_verify" data-status="{$user.ident_status}">
+                    <ul>
+                        <li>姓名：{$user.truename}</li>
+                        <li>证件类型：身份证</li>
+                        <li>身份证号：{$user.idcard}</li>
+                        <li>认证时间：{$user['addtime']|addtime}</li>
+                    </ul>
+                    <if condition="($user.ident_status eq 2) OR ($user.ident_status eq 1)">
+                        <div class="idcard-area idcard-checked">
+                            <div class="idcard-box">
+                                <p>身份证正面图片</p>
+                                <div class="idcard-image" >
+                                    <img id="idcardImg1" title="身份证正面图片" alt="身份证正面图片" src="{$user.idcardimg1}">
+                                </div>
+                            </div>
+                            <div class="idcard-box">
+                                <p>身份证反面图片</p>
+                                <div class="idcard-image" >
+                                    <img id="idcardImg2" title="身份证反面图片" alt="身份证反面图片" src="{$user.idcardimg2}">
+                                </div>
+                            </div>
+                            <!-- <div class="idcard-box">
+                                <p>手持身份证图片</p>
+                                <div class="idcard-image" >
+                                    <img id="idcardImg3" title="手持身份证图片" alt="手持身份证图片" src="{$user.idcardimg3}">
+                                </div>
+                            </div> -->
+                        </div>
+                    <else/>
+                        <div class="idcard-area">
+                            <div class="idcard-box">
+                                <p>身份证正面图片</p>
+                                <div class="idcard-image" onmouseover="$(this).find('.idcard-image-mask').removeClass('hide').addClass('show')" onmouseout="$(this).find('.idcard-image-mask').removeClass('show').addClass('hide')">
+                          
+                                    <div id="imageArea1" class="image-area vertival-center">
+                                        <notempty name="user.idcardimg1">
+                                            <img id="idcardImg1" title="身份证正面图片" alt="身份证正面图片" src="{$user.idcardimg1}">
+                                        <else/>
+                                            <img id="idcardImg1" title="身份证正面图片" alt="身份证正面图片" src="/Public/Home/images/user/id-card-front.jpg">
+                                        </notempty>
+                                    </div>
+                                    <input type="hidden" id="idcardInput1" name="idcardimg1" value="{$user.idcardimg1}">
+                                    <input type="file" id="inputfile1" style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;" value=""/>
+                                    <div class="idcard-image-mask vertival-center hide">
+                                        <button id="uploadButton1" class="upload-button" type="button">点击上传图片</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="idcard-box">
+                                <p>身份证反面图片</p>
+                                <div class="idcard-image" onmouseover="$(this).find('.idcard-image-mask').removeClass('hide').addClass('show')" onmouseout="$(this).find('.idcard-image-mask').removeClass('show').addClass('hide')">
+                           
+                                    <div id="imageArea2" class="image-area vertival-center">
+                                            <notempty name="user.idcardimg2">
+                                                <img id="idcardImg2" title="身份证反面图片" alt="身份证反面图片" src="{$user.idcardimg2}">
+                                            <else/>
+                                                <img id="idcardImg2" title="身份证反面图片" alt="身份证反面图片" src="/Public/Home/images/user/id-card-back.jpg">
+                                            </notempty>
+                                    </div>
+                                    <input type="hidden" id="idcardInput2" name="idcardimg2" value="{$user.idcardimg2}">
+                                    <input type="file" id="inputfile2" style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;" value=""/>
+                                    <div class="idcard-image-mask vertival-center hide">
+                                        <button id="uploadButton2" class="upload-button" type="button">点击上传图片</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="idcard-box">
+                                <p>手持身份证照片</p>
+                                <div class="idcard-image" onmouseover="$(this).find('.idcard-image-mask').removeClass('hide').addClass('show')" onmouseout="$(this).find('.idcard-image-mask').removeClass('show').addClass('hide')">
+                              
+                                    <div id="imageArea3" class="image-area vertival-center">
+                                        <notempty name="user.idcardimg3">
+                                            <img id="idcardImg3" title="手持身份证图片" alt="手持身份证图片" src="{$user.idcardimg3}">
+                                        <else/>
+                                            <img id="idcardImg3" title="手持身份证图片" alt="手持身份证图片" src="/Public/Home/images/user/id-card-inhand.jpg">
+                                        </notempty>
+                                    </div>
+                                    <input type="hidden" id="idcardInput3" name="idcardimg3" value="{$user.idcardimg3}">
+                                    <input type="file" id="inputfile3" style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;" value=""/>
+                                    <div class="idcard-image-mask vertival-center hide">
+                                        <button id="uploadButton3" class="upload-button" type="button">点击上传图片</button>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </if>
+                    <if condition="($user['ident_status'] eq 0)">
+                       <li><button class="ui-button" type="button"  onclick="putidcard()"/>提交审核</button></li>
+                    <elseif condition="($user['ident_status'] eq 3)" />
+                        <li><button class="ui-button" type="button"  onclick="putidcard()"/>重新提交审核</button></li>
+                    </if>
+                </div>
+     
+
+
+    <!--  <div class="set_verify_img">
+      <div class="sv_title">更改实名认证信息流程：</div>
+      <div class="hide_btn" onclick="$(this).toggleClass('hide_active');$('.sv_text').slideToggle('slow');"></div>
+      <div class="sv_text">
+       <p>
+        <span>1.</span>发送与上方认证信息一致的 身份证正反面照片或扫描件 以及 手持身份证头部照给客服
+       </p>
+       <div class="set_verify_img_pic clear">
+        <div class="sv_pic">
+         <img src="/Public/Home/images/pic.jpg" alt="">
+        </div>
+        <span>手持身份证头部照示例</span>
+       </div>
+       <p>
+        <span>2.</span>审核更改申请；审核完成后，客服通知您申请是否通过
+       </p>
+       <p>
+        <span>3.</span>申请通过，请您登录重新进行实名认证
+       </p>
+       <p>
+        申请失败，则请您根据提示信息重新提交申请
+       </p>
+      </div>
+     </div> -->
+    </form>
+  </div>
+ </div>
+</div>
+<br>
+<br>
+<script>
+	$("title").html("{:C('web_title')} - 安全中心 - 实名认证");
+	//顶部菜单高亮
+	$('#user_box').addClass('active');
+	$('#user_nameauth').addClass('active');
+    
+    var upload1 = new upload({
+        uploadId : 'inputfile1',
+        uploadButtonId : 'uploadButton1',
+        onUploadSuccess : function(data){
+            $("#imageArea1").find('img').attr("src", '/Upload/pay/' + data);
+        }
+    });
+    upload1.init();
+
+    var upload2 = new upload({
+        uploadId : 'inputfile2',
+        uploadButtonId : 'uploadButton2',
+        onUploadSuccess : function(data){
+            $("#imageArea2").find('img').attr("src", '/Upload/pay/' + data);
+        }
+    });
+    upload2.init();
+    // var upload3 = new upload({
+    //     uploadId : 'inputfile3',
+    //     uploadButtonId : 'uploadButton3',
+    //     onUploadSuccess : function(data){
+    //         $("#imageArea3").find('img').attr("src", '/Upload/pay/' + data);
+    //     }
+    // });
+    // upload3.init();
+    // var idcardimg1;
+    // var idcardimg2;
+    // $(document).ready(function () {
+    //     //响应文件添加成功事件
+    //     $("#inputfile").change(function () {
+    //         //创建FormData对象
+    //         var data = new FormData();
+    //         //为FormData对象添加数据
+    //         $.each($('#inputfile')[0].files, function (i, file) {
+    //             data.append('upload_file' + i, file);
+    //         });
+    //         //发送数据
+    //         $.ajax({
+    //             url: '/Home/User/imgupload',
+    //             type: 'POST',
+    //             data: data,
+    //             cache: false,
+    //             contentType: false,     //不可缺参数
+    //             processData: false,     //不可缺参数
+    //             success: function (data) {
+    //                 if (data) {
+    //                     idcardimg1 = '/Upload/pay/' + data;
+    //                     $('#idcardImg1').attr("src", '/Upload/pay/' + data)
+    //                         .removeClass('hide')
+    //                         .addClass('show');
+    //                 }
+    //             },
+    //             error: function () {
+    //                 alert('上传出错');
+    //                 $(".loading").hide();   //加载失败移除加载图片
+    //             }
+    //         });
+
+    //     });
+    // });
+    // $(document).ready(function () {
+    //     //响应文件添加成功事件
+    //     $("#inputfile2").change(function () {
+    //         //创建FormData对象
+    //         var data = new FormData();
+    //         //为FormData对象添加数据
+    //         $.each($('#inputfile2')[0].files, function (i, file) {
+    //             data.append('upload_file' + i, file);
+    //         });
+    //         //发送数据
+    //         $.ajax({
+    //             url: '/Home/User/imgupload',
+    //             type: 'POST',
+    //             data: data,
+    //             cache: false,
+    //             contentType: false,     //不可缺参数
+    //             processData: false,     //不可缺参数
+    //             success: function (data) {
+    //                 if (data) {
+    //                     idcardimg2 = '/Upload/pay/' + data;
+    //                     $('#idcardImg2').attr("src", '/Upload/pay/' + data)
+    //                         .removeClass('hide')
+    //                         .addClass('show');
+    //                 }
+    //             },
+    //             error: function () {
+    //                 alert('上传出错');
+    //                 $(".loading").hide();   //加载失败移除加载图片
+    //             }
+    //         });
+
+    //     });
+    // });
+
+
+function putidcard(e){
+    var event = window.event || arguments.callee.caller.arguments[0];
+    var $trigger = $(event.target);
+    var idcardimg1 = upload1.getImageUrl();
+    var idcardimg2 = upload2.getImageUrl();
+    //var idcardimg3 = upload3.getImageUrl();
+    if (idcardimg1 == undefined && idcardimg2 == undefined) {
+        return layer.msg('请上传身份证图片', {icon: 2});
+    }
+    if (idcardimg1 == undefined) {
+        return layer.msg('请上传身份证正面图片', {icon: 2});
+    }
+    if (idcardimg2 == undefined) {
+        return layer.msg('请上传身份证反面图片', {icon: 2});
+    }
+    $.ajax({
+        url: "{:U('User/idcardup')}",
+        type: 'POST',
+        data: {
+            idcardimg1 : idcardimg1,
+            idcardimg2 : idcardimg2,
+            ident_status : 1
+        },
+        beforeSend : function(xhr){
+            $trigger.attr("disabled","disabled").text("提交中...");
+        },
+        success: function (data) {
+            if (data.status == 1) {
+                layer.msg(data.info, {icon: 1});
+                setTimeout(function(){
+                    location.reload();
+                }, 2000);
+            } else {
+                layer.msg(data.info, {icon: 2});
+            }
+        },
+        error: function (err) {
+            //console.error("putidcard error");
+            layer.msg("提交审核失败", {icon: 2});
+        },
+        complete : function(xhr, textStatus){
+            $trigger.removeAttr("disabled").text("提交审核");
+        }
+    });
+}
+
+</script>
+<include file="Public:footer" />

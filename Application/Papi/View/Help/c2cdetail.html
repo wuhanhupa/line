@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>详情</title>
+    <meta name="description" content="description">
+    <meta name="keywords" content="keywords">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/mobile.css"/>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/vue.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/mobile_main.js"></script>
+</head>
+
+<body class="index">
+    <div id="app">
+        <app-component></app-component>
+    </div>
+ 
+        <div>
+            <header class="gui-com-header" v-if="showheader">
+                <a href="javascript:;" class="back-btn" v-on:touchstart="history">返回</a>
+                <h4>详情</h4>
+            </header>
+            <div class="gui-container">
+                <div class="gui-content-header">
+                    <h4>C2C帮助中心</h4>
+                    <p>C2C交易是用户之间点对点交易，用户按照网站交易区显示的价格进行挂单，系统根据价格，数量，支付方式等匹配商家。买方场外转账付款，卖方收到款后进行确认发币。
+                        一分钟学会C2C交易
+                        具体操作如下：
+                        1.在交易区选择需要交易的币种，填写买/卖币的数量，选择支付方式，点击“买入”OR“卖出。”
+                        2.买方挂单成功后在交易区下面查询商家收款信息，在30分钟之内进行付款，转账成功后点击“已支付”。
+                        注意：超过30分钟订单自动取消，请不要继续付款！
+                                如果未打款，可以撤单，撤单后请不要再打款！
+                                如果已经打款，请不要再撤销，否则，由此造成的损失，自行承担！
+                        4.卖币时订单匹配后等待商家付款，在“我的挂单”记录中查询商家姓名，支付方式，确认收到款项后点击"确认已收款”进行确认放币。没有收到款千万不要点击“确认收款”，否则可能钱币两空！
+                        5.付款后对方没有及时确认发币或者有其他问题，在订单下方联系对方，通过对话框进行交谈；成交后10分钟会显示对方电话号码，在线联系不到的，可以电话沟通（电话仅用于该单号问题核实，请勿做其他用途）。
+                        6.买入付款后如果对方1小时后没有确认收款，在订单下方进行申诉并提供付款证明；
+                        卖出时没有收到款项，30分钟后可以申诉，平台工作人员根据您申诉的问题进行核实，并在申诉区进行回复。
+                        注意：1.在交易页面可以看到商家挂单，查询挂单金额和数量，或者选择商家进行交易。
+                        2.买卖双方必须遵循诚实信用原则，及时转账付款，及时进行确认收款，促进形成良好的交易环境。
+                        3.平台对于买卖双方都已经建立信用机制，不及时付款/确认收款，申请仲裁的次数，被申请仲裁频率，被举报不诚信交易的，信用等级降低并限制交易。</p>
+                    <!-- <p>发布人：GET交易所</p> -->
+                </div>
+                <div class="gui-content-text" v-html="detailDatas.content"></div>
+            </div>
+  
+        </div>
+
+  
+</body>
+
+</html>

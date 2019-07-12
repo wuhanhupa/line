@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>帮助中心</title>
+    <meta name="description" content="description">
+    <meta name="keywords" content="keywords">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/mobile.css"/>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/vue.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/mobile_main.js"></script>
+</head>
+
+<body class="index">
+    <div id="app">
+        <app-component></app-component>
+    </div>
+    <script id="app-template" type="text/x-template">
+        <div>
+            <header class="gui-com-header">
+                <a href="javascript:;" v-on:touchstart="goBack" class="back-btn">返回</a>
+                <h4>帮助中心</h4>
+            </header>
+            <div class="gui-container">
+                <ul class="gui-tabs">
+                    <li :class="showId == index ? 'active': ''" v-for="(tab,index) in tabsDatas" v-on:touchstart="changeTab(tab.id,index)">{{ tab.title }}</li>
+                </ul>
+                <div class="gui-content-list">
+                    <div class="gui-list-item" v-for="item in listDatas">
+                        <a :href="'/Papi/help/detail?id=' + item.id" >
+                            <p>{{ item.title }}</p>  
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="gui-loading" v-show="showLoading">
+                <img src="__PUBLIC__/Home/images/loading.gif" alt="加载中">
+                <p>加载中...</p>
+            </div>
+        </div>
+    </script>
+    <script>
+        Vue.component('app-component', {
+            template: '#app-template',
+            data: function() {
+                return {
+                    tabsDatas: '',
+                    listDatas: '',
+                    showId: 0,
+                    showLoading: false,
+                    switch: true,
+                }
+            },
+            watch: {},
+            created: function() {
+                var vm = this;
+                vm.getDatas();
+            },
+            methods: {
+                getDatas: function(id) {
+                    var vm = this;
+                    vm.showLoading = true;
+                    vm.listDatas = '';
+
+                    var url = id ? '/Papi/help/herad?id='+id : '/Papi/help/herad';
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(res) {
+                            vm.switch = true;
+                            vm.showLoading = false;
+                            var array = [];
+                            for(key in res.ArticleTypeLista) {
+
+                                array.push(res.ArticleTypeLista[key]);
+                            }
+                            vm.tabsDatas = array;
+                            vm.listDatas = res.list;
+
+                        },
+                        error: function(msg) {
+                            console.log('erro',msg);
+                            vm.showLoading = false;
+                            vm.switch = true;
+                        }
+                    })
+                },
+                changeTab: function(id,index) {
+                    var vm = this;
+                    if(vm.switch) {
+                       vm.switch = false; 
+                    } else {
+                        console.log('请勿重复提交');
+                        return false;
+                    }
+
+                    vm.showId = index,
+                    vm.getDatas(id);
+                },
+                goBack: function() {
+                    jsWebView();
+                }
+            },
+            mounted: function() {
+                
+            }
+        });
+        new Vue({
+            el: '#app',
+        });
+    </script>
+</body>
+
+</html>

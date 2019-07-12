@@ -1,0 +1,93 @@
+<include file="Public:header" />
+
+<style>
+
+.autobox {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.reg_box {
+    margin-top: 11px;
+    border: 1px solid #efefef;
+    background: #fff;
+    margin-bottom: 48px;
+    padding-bottom: 78px;
+    min-height: 400px;
+}
+
+.center {
+    text-align: center;
+}
+.m-t-40 {
+    margin-top: 40px !important;
+}
+
+
+.orange {
+    color: #e55600 !important;
+}
+
+
+
+</style>
+
+<div class="autobox">
+    <div class="reg_box mart0">
+        <div class="center m-t-40" id="resetlpwd">
+            <button onclick="ceshi()">提交</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function dian(){
+       $.ajax({
+                url: "{:U('Ctwoc/c2cTrade')}",
+                type: 'POST',
+                data: {uid:51,
+                       num:1,
+                       price:6.63,
+                       type:1,
+                       paytype:"1,2",
+                       paypassword:'12345678',
+                       parities:6.63
+                      },
+                success: function (data) {
+                    //console.log('来啊:',data)
+                },
+                error: function () {
+                 
+                }
+            });
+
+    }
+
+    function ceshi(){
+        console.log("2,1");
+        $.ajax({
+            url:'http://139.224.64.194:9002/home/Ctwoc/c2cTrade',
+            type: 'POST',
+            dataType:'json',
+            data: {uid:51,
+                       num:1,
+                       price:6.63,
+                       type:1,
+                       paytype:"2,1",
+                       paypassword:'12345678',
+                       parities:6.63
+                      },
+            success: function(res) {
+                //console.log('res',res);
+            },
+            error: function(msg) {
+            //console.log(msg);
+            }
+        })
+    }
+
+
+
+</script>
+
+<include file="Public:footer" />

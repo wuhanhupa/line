@@ -1,0 +1,28 @@
+
+@import "base";
+@import "components/icon";
+@import "components/utilities";
+@import "components/button";
+@import "components/alert";
+@import "components/form";
+
+.ui-notice {
+	height: 40px;
+	line-height: 40px;
+	font-size: 14px;
+    color: #666;
+    a{
+        margin-left: 15px;
+        color: #666;
+        &:hover{
+            color: #de5959;
+        }
+    }
+    .ui-more {
+        color: #de5959
+    }
+}
+.ui-notice-content {
+	display: inline-block
+}
+

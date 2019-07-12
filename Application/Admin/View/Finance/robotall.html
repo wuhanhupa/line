@@ -1,0 +1,140 @@
+<include file="Public:header"/>
+<div id="main-content">
+    <div id="top-alert" class="fixed alert alert-error" style="display: none;">
+        <button class="close fixed" style="margin-top: 4px;">&times;</button>
+        <div class="alert-content">警告内容</div>
+    </div>
+    <div id="main" class="main">
+        <div class="main-title-h">
+            <span class="h1-title">机器人已成交订单列表</span>
+        </div>
+
+        <div class="cf">
+            <div class="search-form fr cf">
+                <div class="sleft">
+                    <form name="formSearch" id="formSearch" method="get" name="form1">
+                        <select style="width: 160px; float: left; margin-right: 10px;" name="coinname" class="form-control">
+                            <option value=""
+                            <empty name="Think.get.coinname">selected</empty>
+                            >交易币种</option>
+                            <volist name="C['coin']" id="vo">
+                                <option value="{$vo['name']}"
+                                <eq name="vo['name']" value="$Think.get.coinname">selected</eq>
+                                >{$vo['title']}</option>
+                            </volist>
+                        </select>
+                        <select style="width: 160px; float: left; margin-right: 10px;" name="status" class="form-control">
+							<option value=""
+							<empty name="Think.get.status">selected</empty>
+							>全部状态</option>
+							<option value="1"
+							<eq name="Think.get.status" value="1">selected</eq>
+							>下单失败</option>
+							<option value="2"
+							<eq name="Think.get.status" value="2">selected</eq>
+							>下单成功</option>
+							<option value="4"
+							<eq name="Think.get.status" value="4">selected</eq>
+							>交易中</option>
+							<option value="8"
+							<eq name="Think.get.status" value="8">selected</eq>
+                            >交易完成后</option>
+                            <option value="16"
+                            <eq name="Think.get.status" value="16">selected</eq>
+							>撤单</option>
+						</select>
+                        <input type="text" name="name" class="search-input form-control  " value="{$Think.get.name}" placeholder="请输入查询内容" style="">
+                        <a class="sch-btn" href="javascript:;" id="search"> <i class="btn-search"></i> </a>
+                    </form>
+                    <script>
+                        //搜索功能
+                        $(function () {
+                            $('#search').click(function () {
+                                $('#formSearch').submit();
+                            });
+                        });
+                        //回车搜索
+                        $(".search-input").keyup(function (e) {
+                            if (e.keyCode === 13) {
+                                $("#search").click();
+                                return false;
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-table table-striped">
+            <table class="">
+                <thead>
+                <tr>
+                    <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                    <th class="">交易所订单ID</th>
+                    <th class="">第三方订单ID</th>
+                    <th class="">交易对</th>
+                    <th width="">交易类型</th>
+                    <th width="">原始数量</th>
+                    <th width="">挂单数量</th>
+                    <th width="">原始价格</th>
+                    <th width="">挂单价格</th>
+                    <th width="">订单状态</th>
+                    <th width="">交易所</th>
+                    <th width="">备注</th>
+                    <th width="">时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <notempty name="list">
+                    <volist name="list" id="vo">
+                        <tr>
+                            <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}"/></td>
+                            <td>{$vo.originOrderId}</td>
+                            <td>{$vo['platformOrderId']} </td>
+                            <td>{$vo.pair}</td>
+                            <td>
+                                <eq name="vo.bidFlag" value="1">
+                                    买
+                                </eq>
+                                <eq name="vo.bidFlag" value="0">
+                                    卖
+                                </eq>
+                            </td>
+                            <td>{$vo.originAmount}</td>
+                            <td>{$vo.amount}</td>
+                            <td>{$vo.originPrice}</td>
+                            <td>{$vo.platformPrice}</td>
+                            <td>
+                                <eq name="vo.orderStatus" value="1">下单失败</eq>
+                                <eq name="vo.orderStatus" value="2">下单成功</eq>
+                                <eq name="vo.orderStatus" value="4">交易中</eq>
+                                <eq name="vo.orderStatus" value="8">交易完成后</eq>
+                                <eq name="vo.orderStatus" value="16">撤单</eq>
+                            </td>
+                            <td>
+                                <eq name="vo.platformSystem" value="1">未知</eq>
+                                <eq name="vo.platformSystem" value="2">未知</eq>
+                                <eq name="vo.platformSystem" value="3">ZB</eq>
+                            </td>
+                            <td>{$vo.remark}</td>
+                            <td>{$vo.ctime|get_microtime_format}</td>
+                        </tr>
+                    </volist>
+                    <else/>
+                    <td colspan="12" class="text-center">Oh! 暂时还没有内容!</td>
+                </notempty>
+                </tbody>
+            </table>
+            <div class="page">
+                <div>{$page}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="Public:footer"/>
+<block name="script">
+    <script type="text/javascript" charset="utf-8">
+        //导航高亮
+        highlight_subnav("{:U('Finance/robotall')}");
+    </script>
+</block>

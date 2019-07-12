@@ -1,0 +1,167 @@
+<include file="Public:header"/>
+<div class="wrapper">
+	<div class="ui-block">
+		<form action="">
+			<div class="sb-form-title">
+				<h1>创新项目投票上线申请( <a href="#sb">查看规则</a> )</h1>
+				<p>请填写以下项目资料 （请务必提供最详细准确信息，<span style="color: #de5959;">获得审核批准后将有权力参与上币</span>	）</p>
+				<p><a href="__PUBLIC__/file/GTElistapplicationform.docx" style="font-size:10px;color: deepskyblue;">点击可下载文档</a></p>
+			</div>
+			<div class="ui-form ui-center sb-form">
+				<div class="ui-form-field">
+					<label for="projectname">联系邮件</label>
+					<input class="ui-form-control" type="text" id="email" name="email" placeholder="联系邮件">
+				</div>
+				<div class="ui-form-field">
+					<label for="projectname">项目名</label>
+					<input class="ui-form-control" type="text" id="projectname" name="projectname" placeholder="请输入项目名">
+				</div>
+				<div class="ui-form-field">
+					<label for="symbol">代币名</label>
+					<input class="ui-form-control" type="text" id="symbol" name="symbol" placeholder="请输入代币名">
+				</div>
+				<div class="ui-form-field">
+					<label for="website">官方网站</label>
+					<input class="ui-form-control" type="text" id="website" name="website" placeholder="请输入官方网站">
+				</div>
+				<div class="ui-form-field">
+					<label for="whitepaperlink">白皮书链接</label>
+					<input class="ui-form-control" type="text" id="whitepaperlink" name="whitepaperlink" placeholder="请输入白皮书链接">
+				</div>
+				<div class="ui-form-field">
+					<label for="projectinfo">项目介绍</label>
+					<input class="ui-form-control" type="text" id="projectinfo" name="projectinfo" placeholder="请输入项目介绍">
+				</div>
+				<div class="ui-form-field">
+					<label for="teaminfo">团队介绍</label>
+					<input class="ui-form-control" type="text" id="teaminfo" name="teaminfo" placeholder="请输入团队介绍">
+				</div>
+				<div class="ui-form-field">
+					<label for="advisorinfo">顾问信息</label>
+					<input class="ui-form-control" type="text" id="advisorinfo" name="advisorinfo" placeholder="请输入顾问信息">
+				</div>
+				<div class="ui-form-field">
+					<label for="icostatus">ICO状态</label>
+					<input class="ui-form-control" type="text" id="icostatus" name="icostatus" placeholder="请输入ICO状态">
+				</div>
+				<div class="ui-form-field">
+					<label for="symboltotal">代币总量</label>
+					<input class="ui-form-control" type="text" id="symboltotal" name="symboltotal" placeholder="请输入代币总量">
+				</div>
+				<div class="ui-form-field">
+					<label for="dismechan">代币分配机制</label>
+					<input class="ui-form-control" type="text" id="dismechan" name="dismechan" placeholder="请输入代币分配机制">
+				</div>
+				<div class="ui-form-field">
+					<label for="symbolcisupply">流通代币量</label>
+					<input class="ui-form-control" type="text" id="symbolcisupply" name="symbolcisupply" placeholder="请输入流通代币量">
+				</div>
+				<div class="ui-form-field">
+					<label for="marketlistd">已上交易所</label>
+					<input class="ui-form-control" type="text" id="marketlistd" name="marketlistd" placeholder="请输入已上交易所">
+				</div>
+				<div class="ui-form-field">
+					<label for="tradevolume">24小时交易量</label>
+					<input class="ui-form-control" type="text" id="tradevolume" name="tradevolume" placeholder="请输入24小时交易量">
+				</div>
+				<div class="ui-form-field">
+					<label for="privatesaleinfo">私募信息</label>
+					<input class="ui-form-control" type="text" id="privatesaleinfo" name="privatesaleinfo" placeholder="请输入私募信息">
+				</div>
+				<div class="ui-form-field">
+					<label for="projectprogress">项目开发进度</label>
+					<input class="ui-form-control" type="text" id="projectprogress" name="projectprogress" placeholder="请输入项目开发进度">
+				</div>
+				<div class="ui-form-field">
+					<label for="numberusers">产品用户数量</label>
+					<input class="ui-form-control" type="text" id="numberusers" name="numberusers" placeholder="请输入产品用户数量">
+				</div>
+				<div class="ui-form-field">
+					<label for="squsernum">社区及其用户数量</label>
+					<input class="ui-form-control" type="text" id="squsernum" name="squsernum" placeholder="请输入社区及其用户数量">
+				</div>
+				<div class="ui-form-field">
+					<label for="codeopensource">源代码是否公开</label>
+					<input class="ui-form-control" type="text" id="codeopensource" name="codeopensource" placeholder="请输入源代码是否公开">
+				</div>
+				<div class="ui-form-field">
+					<label for="opensourcelink">公开地址</label>
+					<input class="ui-form-control" type="text" id="opensourcelink" name="opensourcelink" placeholder="请输入公开地址">
+				</div>
+				<div class="ui-form-field">
+					<button class="ui-button ui-button-block" type="button" onclick="sbSubmit()" >提交上币表单</button>
+				</div>
+			</div>
+		</form>
+		<div class="vt-con" id="sb">
+			<h3><i class="warn-iocn">!</i>上币流程：</h3>
+			<ol class="vote-warn-tip">
+				<li>请将上列问题填好发送邮件到pr@coinx.pro（邮件格式：项目名GTE上币申请表），越详细越好</li>
+				<li>我们会及时审阅，符合上币条件的我们将在5至10个工作日内回复</li>
+				<li>如果根据提供的信息，评估后不能在GTE上币，将不会被通知</li>
+				<li>如果您提交后没有收到通知，欢迎再一次通过申请表提供更加详细和更有说服力的数据和信息</li>							
+			</ol>
+		</div>
+		<div class="vt-con">
+			<h3><i class="warn-iocn">!</i>评估标准：</h3>
+			<p>一般来说，我们将根据以下标准进行项目评估</p>
+			<ol class="vote-warn-tip">
+				<li>项目资质审核及政策风险（发行主体、法律合规性、公司背景）</li>
+				<li>项目核心团队和投资机构（核心团队信息、投融资背景、团队人员分配）</li>
+				<li>项目商业模式和市场规模（与区块链技术结合程度、用户规模及增长情况、存量用户）</li>
+				<li>项目代币生态建设及整体分配（代币属性、分配机制、锁仓情况、代币应用、市值及交易情况）</li>	
+				<li>项目社区及市场运营推广（社群数量、用户活跃度及反馈、运营类活动、媒体报道）</li>
+				<li>项目产品进展及对外披露信息（项目路线图、开发情况、代码更新频次和开放程度）</li>							
+			</ol>
+		</div>
+		<div class="vt-con" style="margin-bottom: 40px;">
+			<h3><i class="warn-iocn">!</i>下线币种说明：</h3>
+			<p>为保护投资者利益，GTE保留项目下线或继续支持项目在平台上交易的权利，项目方如果触发如下条件，我们会公告通知交易下线，包含但不限于：</p>
+			<ol class="vote-warn-tip">
+				<li>项目团队解散</li>
+				<li>项目方面临重大法律问题</li>
+				<li>由于战略调整和发展需要，项目运营团队主动要求下线</li>
+				<li>严重的技术或安全问题没有及时得到解决</li>	
+				<li>在连续30个交易日，每日交易额小于2万美金</li>
+				<li>不满足继续交易的其他事项</li>							
+			</ol>
+			<p>GTE会对决定下线的项目提前5天发出下线公告，用户有30天的期限从钱包中移出资产</p>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	function sbSubmit(){
+		var data = {}
+		var $inputs = $(".sb-form input");
+		var error = [];
+		for(var i = 0; i < $inputs.length; i++){
+			var $input = $($inputs[i]);
+			var key = $input.attr("name");
+			var value = $input.val();
+			if(value == "" || value == null){
+				var label = $("label[for='" + key +"']").text();
+				error.push(label);
+			}
+			data[key] = value;
+		}
+		if(error.length > 0){
+			layer.msg("请输入:" + error.join(','), {icon:2});
+			return false;
+		}
+		$.ajax({
+			url : "/Vote/add",
+			type : "post",
+			data : data,
+			success : function(res){
+				if(res.code == 0){
+					layer.msg(res.msg, {icon:1});
+					//提交成功清空输入框内容
+					$inputs.val("");
+				}else{
+					layer.msg(res.msg, {icon:2});
+				}
+			}
+		})
+	}
+</script>
+<include file="Public:footer"/>

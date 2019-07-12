@@ -1,0 +1,395 @@
+<include file="Public:header" />
+
+<div class="autobox">
+    <div class="now">
+        <a href="/" class="orange">首页</a> &gt; 财务中心
+    </div>
+    <div class="assets_center clear po_re zin70">
+        <include file="Finance:left" />
+        <div class="assets-content assets_content w900 right bg_w">
+            <div id="widget">
+                <div class="ui-title">
+                    <span>财务中心</span>
+                </div>
+                <include file="Public:alert" />
+                <div class="gui-accounts-container">
+                    <!--<div class="gui-account <eq name='cate' value='1'>slected</eq>" data-cate="1">
+                        <span>币币账户</span>
+                        <p>{$spot}CNY</p>
+                    </div>-->
+                    <div class="gui-account <eq name='cate' value='2'>slected</eq>" data-cate="2">
+                        <span>合约账户</span>
+                        <p>{$contractCny}CNY</p>
+                    </div>
+                </div>
+                <if condition="$cate == 1">
+                    <!-- 币币账户table-header -->
+                    <div class="coin_list_top" id="coninListTop" style="top: 0px;background: #ffffff;">
+                        <ul>
+                            <li class="" style="width: 20%;">币种</li>
+                            <!-- <li class="" style="width: 5%;">价格</li> -->
+                            <li class="" style="width: 14%;">可用余额</li>
+                            <li class="" style="width: 14%;">冻结委托</li>
+                            <li class="" style="width: 14%;">总计</li>
+                            <!-- <li class="" style="width: 14%;">折合 (￥)</li> -->
+                            <li style="width: 38%;" class="gui-right-space">操作</li>
+                        </ul>
+                    </div>
+                    <else />
+                    <!-- 合约账户table-header -->
+                    <div class="coin_list_top" id="coninListTop" style="top: 0px;background: #ffffff;">
+                        <ul>
+                            <li class="" style="width: 20%;">币种</li>
+                            <!-- <li class="" style="width: 5%;">价格</li> -->
+                            <li class="" style="width: 14%;">可用余额</li>
+                            <li class="" style="width: 14%;">仓位保证金</li>
+                            <li class="" style="width: 14%;">委托保证金</li>
+                            <li class="" style="width: 14%;">总额</li>
+                            <li style="width: 24%;" class="gui-right-space">操作</li>
+                        </ul>
+                    </div>
+                </if>
+            </div>
+
+            <if condition="$cate == 1">
+                <!-- 币币账户列表 start -->
+                <ul class="coin_list" id="grid-finance">
+                    <volist name="coinList" id="vo">
+                        <li>
+                            <dl>
+                                <dt class="" style="width: 20%;">
+                                    <div class="coin_pic">
+                                        <img src="__UPLOAD__/coin/{$vo['img']}" alt="{$vo['title']}" title="{$vo['title']}" />
+                                    </div>
+                                    <div class="coin_name" name="{$vo['name']}">
+                                        <div>{$vo['title']}</div>
+                                    </div>
+                                </dt>
+                                <!-- <dd style="width: 5%">
+                                    <p class="orange">￥{$vo['jia']|NumToStr}</p>
+                                </dd> -->
+                                <dd style="width: 14%;">{$vo['xnb']|NumToStr}</dd>
+                                <dd style="width: 14%;">{$vo['xnbd']|NumToStr}</dd>
+                                <dd style="width: 14%;">{$vo['xnbz']|NumToStr}</dd>
+                                <!-- <dd style="width: 14%;">{$vo['zhehe']}</dd> -->
+                                <dd style="width: 38%;" class="gui-right-space">
+                                    <div class="ui-button-box gui-button-box">
+                                        <button class="gui-button" type="button" onclick="myczfunc('{$vo.name}')">充值
+                                        </button>
+                                        <button class="gui-button" type="button" data-market="{$vo.name}" onclick="mytxfunc('{$vo.name}')">提现
+                                        </button>
+                                        <if condition="$vo.name == 'usdt'">
+                                            <!--<button class="gui-button" type="button" onclick="top.location='/Ctwoc/index'">去交易
+                                            </button>-->
+                                            <button class="gui-button" type="button" onclick="capitalTransfer('{$vo.name}','{$vo.xnb}','1')">资金划转
+                                            </button>
+
+                                            <else />
+                                            <!--<button class="gui-button" type="button" onclick="top.location='/trade/index/market/{$vo.name}_usdt'">去交易
+                                            </button>-->
+                                        </if>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </li>
+                    </volist>
+                </ul>
+                <!-- 币币账户列表 end -->
+                <else />
+                <ul class="coin_list" id="grid-finance">
+                    <!-- 合约账户列表 start -->
+                    <volist name="contList" id="voo">
+                        <li>
+                            <dl>
+                                <dt class="" style="width: 20%;">
+                                    <div class="coin_pic">
+                                        <img src="__UPLOAD__/coin/{$voo['img']}" alt="{$voo['title']}" title="{$voo['title']}" />
+                                    </div>
+                                    <div class="coin_name" name="{$voo['name']}">
+                                        <div>{$voo['title']}</div>
+                                    </div>
+                                </dt>
+                                <dd style="width: 14%;">{$voo['balance']|default='0'}</dd>
+                                <dd style="width: 14%;">{$voo['position_margin']|default='0'}</dd>
+                                <dd style="width: 14%;">{$voo['order_margin']|default='0'}</dd>
+                                <dd style="width: 14%;">{$voo['total']|default='0'}</dd>
+                                <dd style="width: 24%;" class="gui-right-space">
+                                    <div class="ui-button-box gui-button-box">
+                                        <button class="gui-button" type="button" onclick="top.location='/Fupay/index'">去交易
+                                        </button>
+                                        <!--<button class="gui-button" type="button" onclick="capitalTransfer('{$voo.name}','{$voo.balance}','2')">资金划转
+                                        </button>-->
+                                    </div>
+                                </dd>
+                            </dl>
+                        </li>
+                    </volist>
+                </ul>
+                <!-- 合约账户列表 end -->
+            </if>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+<style>
+    .absolute {
+        position: absolute;
+    }
+
+    .fixed {
+        position: fixed;
+    }
+</style>
+<script type="text/javascript">
+    // 增加合约账户
+    var _balance = '';
+
+    var coinNameArray = $('.coin_list').find('.coin_name');
+
+    var symbolList = getSymbolList(coinNameArray); // 所有币种的英文缩写
+
+    function getSymbolList(array) { // 获取数字货币名称列表
+        var symbolArray = [];
+
+        for (var i = 0; i < array.length; i++) {
+            symbolArray.push($(array[i]).attr('name'))
+
+        }
+        return symbolArray;
+    }
+
+
+    function constructHtml(symbolList, currentConin) { // 拼接币种下拉列表option
+
+        var optionHtml = '',
+            selectHml = '';
+
+        for (var i = 0; i < symbolList.length; i++) {
+            if (symbolList[i] == currentConin) {
+                selectHml = '<option value=' + symbolList[i] + '>' + symbolList[i].toUpperCase() + '</option>'
+            } else {
+                optionHtml += '<option  value=' + symbolList[i] + '>' + symbolList[i].toUpperCase() + '</option>'
+            }
+
+        }
+
+        return selectHml + optionHtml;
+    }
+
+
+    // 选择账户类型
+    $('.gui-accounts-container').on('click', '.gui-account', function () {
+        var cate = $(this).data('cate');
+        window.location.href = "/finance?cate=" + cate;
+        //  if(!$(this).hasClass('slected')) {
+        //      $(this).addClass('slected').siblings().removeClass('slected');
+        //  }
+    })
+
+    // 资金划转
+    function capitalTransfer(coinName, balance,cate) {
+        _balance = balance;
+        layer.open({
+            type: 1,
+            area: '575px',
+            title: false,
+            closeBtn: 2,
+            shadeClose: false,
+            skin: 'gui-mask-class',
+            content: '<div class="gui-mask-contanier">' +
+                '<h4 class="gui-mask-title">资金划转</h4>' +
+                '<div class="form-box">' +
+                '<ul>' +
+                '<li>' +
+                '<span class="gui-input-title">币种</span>' +
+                '<select name="select-symbol-box" id="select-symbol-box">' +
+                constructHtml(symbolList, coinName) +
+                '</select>' +
+                '</li>' +
+                '<li class="transfer-guide">' +
+                '<span class="gui-input-title">资金划转方向</span>' +
+                    str(cate) +
+                '</li>' +
+                '<li>' +
+                '<span class="gui-input-title">划转数量</span>' +
+                '<div>' +
+                '<input type="text" value="" placeholder="输入金额" />' +
+                '<p>可转数量' + balance + '<i class="getAll">全部划转</i></p>' +
+                '</div>' +
+                '</li>' +
+                '</ul>' +
+                '<button type="button" class="sub-btn ui-button ui-button-block" onclick="submitCapitalData(this,'+cate+')">确定</button>' +
+                '</div>' +
+                '</div>'
+        });
+
+        function str(cate) {
+            if(cate == 1) {
+                return '<p><span>币币账户</span><b>转至</b><span>合约账户</span></p>';
+            } else {
+                return '<p><span>合约账户</span><b>转至</b><span>币币账户</span></p>';
+            }
+        }
+    }
+
+    // 资金划转 全部划转
+    $('body').on('click','.getAll',function() {
+        $(this).parent().siblings('input').val(_balance);
+    })
+    // 提交资金划转数据
+    function submitCapitalData(_this, cate) {
+        var inputValue = $(_this).parents('.form-box').find('input').val();
+        var selectedSymbol = $(_this).parents('.form-box').find('option:selected').val();
+
+        var data = {
+            coin: selectedSymbol,
+            num: inputValue,
+        }
+
+        if (cate == 1) {
+            var url = '/Contract/funds_transfer';
+        } else {
+            var url = '/Contract/transfer_funds';
+        }
+
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            type: 'POST',
+            data: data,
+            success: function (res) {
+                if (res.status == 1) {
+                    layer.msg(res.info, {
+                        icon: 1
+                    }, function () {
+                        layer.closeAll();
+                        window.location.reload();
+                    });
+                } else {
+                    layer.msg(res.info, {
+                        icon: 2
+                    });
+                }
+
+            },
+            error: function (msg) {
+                console.log(msg)
+            }
+        })
+    }
+</script>
+<script type="text/javascript">
+    function myczfunc(market) {
+        $.post("{:U('userburse/checkcoin')}", {
+            market: market
+        }, function (data) {
+            if (data.status == 1) {
+                window.location = "/userburse/mycz&market=" + market;
+            } else {
+                layer.msg(data.info, {
+                    icon: 2
+                });
+            }
+        }, "json");
+
+    }
+
+    function mytxfunc(market) {
+        //alert(market);
+        $.post("{:U('userburse/checkwallet')}", {
+            market: market
+        }, function (data) {
+            if (data.status == 1) {
+                window.location = "/userburse/mytx&market=" + market;
+            } else {
+                layer.msg(data.info, {
+                    icon: 2
+                });
+            }
+        }, "json");
+
+    }
+</script>
+<script type="text/javascript">
+    //隔行变色
+    function change_bg(id) {
+        var oCoin_list = $('#' + id);
+        var oC_li = oCoin_list.find('li');
+        var oInp = oCoin_list.find('input');
+        for (var i = 0; i < oC_li.length; i++) {
+            oC_li.eq(i).css('background-color', i % 2 ? '#fff' : '#f8f8f8');
+            oInp.mouseover(function () {
+                this.style.color = '#fff';
+                this.style.backgroundColor = '#e55600'
+            });
+            oInp.mouseout(function () {
+                this.style.color = '#e55600';
+                this.style.background = 'none'
+            });
+        }
+    }
+
+    function change_bg_1(id, tag, col1, col2) {
+        var oCoin_list = $('#' + id);
+        var oC_li = oCoin_list.find(tag);
+        for (var i = 0; i < oC_li.length; i++)
+            oC_li.eq(i).css('background-color', i % 2 ? col1 : col2);
+    }
+
+    //移入行变色
+    function change_line_bg(id, tag, nobg) {
+        var oCoin_list = $('#' + id);
+        var oC_li = oCoin_list.find(tag);
+        var oInp = oCoin_list.find('input');
+        var oldCol = null;
+        var newCol = null;
+        if (!nobg) {
+            for (var i = 0; i < oC_li.length; i++) {
+                oC_li.eq(i).css('background-color', i % 2 ? '#fff' : '#f8f8f8');
+                oInp.mouseover(function () {
+                    this.style.color = '#fff';
+                    this.style.backgroundColor = '#e55600';
+                });
+                oInp.mouseout(function () {
+                    this.style.color = '#e55600';
+                    this.style.background = 'none';
+                });
+            }
+        }
+        oCoin_list.find(tag).hover(function () {
+            oldCol = $(this).css('backgroundColor');
+            $(this).css('background-color', '#f9f2dd');
+        }, function () {
+            $(this).css('background-color', oldCol);
+        })
+    }
+
+    change_line_bg('grid-finance', 'li');
+    var rollSet = $('#coninListTop');
+    var offset = rollSet.offset();
+    var fwidth = $("#footer").height();
+    $(window).scroll(
+        function () {
+            var scrollTop = $(window).scrollTop();
+            var scrollBtm = $(document).height() - $(window).scrollTop() - rollSet.height();
+            if (offset.top < scrollTop) {
+                if (scrollBtm > fwidth) {
+                    rollSet.removeClass('absolute').addClass('fixed')
+                } else {
+                    rollSet.removeClass('fixed').addClass('absolute')
+                }
+            } else {
+                rollSet.removeClass('fixed')
+            }
+        })
+</script>
+
+<script>
+    $("title").html("{:C('web_title')} - 财务中心");
+    //菜单高亮
+    $('#finance_box').addClass('active');
+    $('#finance_index').addClass('active');
+</script>
+<include file="Public:footer" />

@@ -1,0 +1,65 @@
+@import "compass/css3";
+
+.ui-button {
+	display: inline-block;
+	font-size: 14px;
+	background-color: #d45858;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+	border-radius: 3px;
+    padding: 5px 15px;
+    line-height: 20px; 
+    white-space: nowrap;
+    vertical-align: middle;
+    &:hover {
+        background-color: #ea5858;
+    }
+    &:disabled,
+    &.disabled{
+        cursor: not-allowed;
+        background-color: #cacaca;
+        &:hover{
+            background-color: #cacaca;
+        } 
+    }
+    &.submitting{
+        @include opacity(0.7);
+    }
+}
+
+.ui-button-green {
+    background-color: #25796a;
+    &:hover {
+        background-color: #248a77;
+    } 
+}
+.ui-button-blue {
+    background-color: #0a83ab;
+    &:hover {
+        background-color: #199fcc;
+    }
+}
+.ui-button-orange{
+    background-color: #e55600;
+    &:hover {
+        background-color: #ff660b;
+    }
+}
+.ui-button-small {
+	padding: 2px 6px;
+}
+.ui-button-big {
+	padding: 10px 20px;
+}
+.ui-button-block { 
+	margin-top: 15px;
+	width: 100%;
+}
+
+.ui-button-box {
+    font-size: 0;
+    .ui-button {
+        margin: 0 5px
+    }
+}

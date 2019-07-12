@@ -1,0 +1,119 @@
+<include file="Public:header"/>
+<div class="autobox">
+    <div class="now">
+        <a href="/" class="orange">首页</a> &gt;
+        <a href="/user/index.html" class="orange">安全中心 </a> &gt; 微信绑定
+    </div>
+    <div class="assets_center clear po_re zin70">
+        <!--左侧菜单-->
+        <include file="User:left"/>
+        <!--右侧内容-->
+        <div class="assets-content assets_content w900 right bg_w">
+            <div class="ui-title">
+                <span>微信绑定</span>
+            </div>
+            <include file="Public:alert" />
+
+            <empty name="user['id']">
+                <div id="msg-box"></div>
+                <form id="zfb" action="{:U('User/uwxin')}" class="pwtrade mart30" enctype="multipart/form-data" method="post">
+                    <dl>
+                        <dt>微信账号：</dt>
+                        <dd>
+                            <input type="text" id="bindAccount" name="wxaccount">
+                        </dd>
+                    </dl>
+                      <dl>
+                        <dt>微信昵称：</dt>
+                        <dd>
+                            <input type="text" id="name" name="name">
+                        </dd>
+                    </dl>
+                     <dl>
+                        <dt>微信收款码图片：</dt>
+                        <dd>
+                            <notempty name="user.payimg">
+                                <!--没有图片显示默认图片-->
+                                <button class="upload-button" type="button" onclick="getElementById('inputfile').click()">点击上传图片</button>
+                                <!-- <img id="up_img" onclick="getElementById('inputfile').click()" style="cursor:pointer;max-width:200px;max-height:200px; " title="点击添加图片" alt="点击添加图片" src="{$user.payimg}"> -->
+                            <else/>
+                                <!--没有图片显示默认图片-->
+                                <button class="upload-button" type="button" onclick="getElementById('inputfile').click()">点击上传图片</button>
+                                <!-- <img id="up_img" onclick="getElementById('inputfile').click()" style="cursor:pointer;max-width:200px;max-height:200px;" title="点击添加图片" alt="点击添加图片" src="__PUBLIC__/Admin/images/addimg.png"> -->
+                            </notempty>
+                            <input type="hidden" id="img" name="payimg" value="{$user.payimg}">
+                            <input type="file" id="inputfile" style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;" value=""/>
+                            <div class="image-area hide">
+                                <img id="qcodeImg" title="点击添加图片" alt="点击添加图片" src="{$user.payimg}" style="max-width: 200px;max-height: 355px;">
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>交易密码：</dt>
+                        <dd>
+                            <input type="password" id="paypassword" name="paypassword">
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt></dt>
+                        <dd style="width: 200px">
+                            <button class="ui-button ui-button-block" type="button" onclick="accountBind.save()">绑定微信</button>
+                        </dd>
+                    </dl>
+                </form>
+                <else/>
+                <form id="form-mobilebind" class="pwtrade mart30" enctype="multipart/form-data" method="post">
+                    <div class="band_succ" style="margin-bottom: 20px;margin-left: 130px;">
+                        <div class="ui-band ui-band-success"><i class="ui-icon ui-icon-success"></i>您的账户已绑定微信。</div>
+                    </div>
+                    <dl>
+                        <dt>微信账号：</dt>
+                        <dd title="联系管理员修改">
+                            <input type="text" id="bindAccount" value="{$user.waccount}">
+                        </dd>
+                    </dl>
+                     <dl>
+                       <dt>微信账号昵称：</dt>
+                        <dd>
+                            <input type="text" id="name" value="{$user.name}">
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>微信收款码图片：</dt>
+                        <dd>
+                            <notempty name="user.wximg">
+                             <!--没有图片显示默认图片-->
+                             <img id="qcodeImg" onclick="getElementById('inputfile').click()" style="cursor:pointer;max-width: 200px;max-height: 355px; " title="点击添加图片" alt="点击添加图片" src="{$user.wximg}">
+                             <else/>
+                             <!--没有图片显示默认图片-->
+                             <img id="qcodeImg" onclick="getElementById('inputfile').click()" style="cursor:pointer;max-width: 200px;max-height: 355px;" title="点击添加图片" alt="点击添加图片" src="__PUBLIC__/Admin/images/addimg.png">
+                             </notempty>
+                             <input type="hidden" id="img" name="payimg" value="{$user.wximg}">
+                             <input type="file" id="inputfile" style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;" value=""/>
+                        </dd>
+                   </dl> 
+                    <dl>
+                         <dt></dt>
+                         <dd style="width: 200px">
+                            <button class="ui-button ui-button-block" type="button" onclick="accountBind.update()">保存微信信息</button>
+                        </dd>
+                   </dl>
+                </form>
+            </empty>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<script>
+    $('#user_box').addClass('active');
+    $("#user_bind_wx").addClass("active");
+
+    accountBind.init({
+        name : "wxaccount",
+        saveUrl : "{:U('User/uwxin')}",
+        updateUrl : "{:U('User/wxupdate')}"
+    });
+
+</script>
+<include file="Public:footer"/>

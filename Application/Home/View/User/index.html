@@ -1,0 +1,146 @@
+<include file="Public:header" />
+<div class="autobox">
+    <div class="now">
+    <a href="/" class="orange">首页</a>&gt; 安全中心
+    </div>
+    <div class="assets_center clear po_re zin70">
+    <!--左侧菜单-->
+    <include file="User:left" />
+    <!--右侧内容-->
+    <div class="assets-content assets_content w900 right bg_w" id="safebox">
+        <div class="ui-title">
+            <span>安全中心</span>
+        </div>
+        <include file="Public:alert" />
+
+   <div class="safe_center clear">
+    <div class="sc_level">
+     <if condition="($user['ident_status'] eq 0)">
+     <div class="sc_level_4"></div>
+     <elseif condition="($user['ident_status'] eq 3)"/>
+      <div class="sc_level_4"></div>
+     <elseif condition="($user['ident_status'] eq 1)"/>
+      <div class="sc_level_2"></div>
+     <else />
+     <div class="sc_level_1"></div>
+     </if>
+    </div>
+    <dl>
+     <dt>
+      ID：<span>{$user.id}</span>
+     </dt>
+     <dd>姓名：{$user.truename}</dd>
+     <dd>用户名：{$user.username}</dd>
+    </dl>
+   </div>
+   <ul class="sc_statu">
+    <li><em class="sc_statu_type_1"></em>
+     <dl>
+      <dt>实名认证</dt>
+       <if condition="($user['ident_status'] eq 0)">
+         <dd class="nopass">
+          <span>请去认证</span><a href="/user/nameauth.html">查看</a>
+        </dd>
+        <elseif condition="($user['ident_status'] eq 1)"/>
+         <dd class="nopass">
+          <spa>审核中</span><a href="/user/nameauth.html">查看</a>
+        </dd>
+        <elseif condition="($user['ident_status'] eq 3)"/>
+         <dd class="nopass">
+          <span>审核未通过</span><a href="/user/nameauth.html">查看</a>
+        </dd>
+        <else/>
+        <dd class="alpass">
+          已认证<a href="/user/nameauth.html">查看</a>
+        </dd>
+     </if>
+    
+     </dl>
+   </li>
+
+    <li><empty name="user['moble']"> <em class="sc_statu_type_3_1"></em>
+     <dl>
+      <dt>绑定手机</dt>
+      <dd class="nopass">
+       未认证 <a href="/user/moble.html">查看</a>
+      </dd>
+     </dl>
+     <else /> <em class="sc_statu_type_3"></em>
+     <dl>
+      <dt>绑定手机</dt>
+      <dd class="alpass">
+       已认证 <a href="/user/moble.html">查看</a>
+      </dd>
+     </dl>
+     </empty>
+   </li>
+   </ul>
+   <div class="sc_info_list" id="sc_info_list">
+    <dl>
+     <dt>登录密码</dt>
+     <dd>
+      <p>登录账户时需要输入的密码</p>
+     </dd>
+     <dd>
+      <div class="changepw">
+       <a href="/user/password.html">修改登录密码</a>
+      </div>
+     </dd>
+    </dl>
+    <dl>
+     <dt>交易密码</dt>
+     <dd>
+      <p>在进行交易时需要输入的密码</p>
+     </dd>
+     <dd>
+      <div class="changepw">
+       <a href="/user/paypassword.html">修改交易密码</a>
+      </div>
+     </dd>
+    </dl>
+    <dl>
+     <dt>实名认证</dt>
+     <dd>
+      <p>受国家要求及为了您的资金安全需进行实名认证</p>
+     </dd>
+     <dd>
+       <if condition="($user['ident_status'] eq 0)">
+         <div class="changepw">
+           <span style="color: red">待认证</span>,请上传身份证照片 <a href="/user/nameauth.html">查看</a>
+         </div>
+       <elseif condition="($user['ident_status'] eq 1)"/>
+        <div class="changepw">
+           <span style="color: red">审核中请您耐心等待</span> <a href="/user/nameauth.html">查看</a>
+         </div>
+        <elseif condition="($user['ident_status'] eq 3)"/>
+        <div class="changepw">
+           <span style="color: red">审核未通过请重新上传</span> <a href="/user/nameauth.html">查看</a>
+         </div> 
+       <else/>
+         <div class="changepw">
+           已认证 <a href="/user/nameauth.html">查看</a>
+         </div>
+     </if>
+     </dd>
+    </dl>
+    <dl>
+     <dt>手机绑定</dt>
+     <dd>
+      <p>在提现的时候需要使用</p>
+     </dd>
+     <dd>
+      <div class="changepw">
+       <empty name="user['moble']"> 未认证 ｜ <a href="/user/nameauth.html">立即认证</a> <else /> <a href="/user/moble.html">查看</a> </empty>
+      </div>
+     </dd>
+    </dl>
+   </div>
+  </div>
+ </div>
+</div>
+<script>
+	$('#user_box').addClass('active');
+	$('#user_index').addClass('active');
+   
+</script>
+<include file="Public:footer" />

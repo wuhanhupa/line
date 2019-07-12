@@ -1,0 +1,457 @@
+<include file="Public:header" />
+<style>
+    .form_sub_btn {
+        cursor: pointer;
+        width: 100%;
+        display: block;
+        line-height: 40px;
+        text-align: center;
+        font-size: 14px;
+        background-color: #0a8668;
+        color: #fff;
+        border: 0;
+    }
+	.reg_box1 {
+		margin-top: 11px;
+		margin-bottom: 48px;
+		padding-bottom: 38px;
+		min-height: 400px;
+	}
+
+
+	
+	/* input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
+	color: #ff0000; 
+	} 
+	input:-moz-placeholder, textarea:-moz-placeholder { 
+	color: #ff0000;
+	} 
+	input::-moz-placeholder, textarea::-moz-placeholder { 
+	color: #ff0000;
+	} 
+	input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
+	color: #ff0000;
+	}  */
+
+
+	
+</style>
+<div class="autobox" id="reg-step1" style="position:absolute;left:50%;margin-left:-600px;">
+	<div class="login_step">
+		<ul class="order clear">
+			<li class="orange"><i class="order_1_1"></i>用户注册
+				<div class="order_line"></div></li>
+			<li><i class="order_2"></i>设置交易密码
+				<div class="order_line"></div></li>
+			<li><i class="order_3"></i>实名认证
+				<div class="order_line"></div></li>
+			<li><i class="order_4"></i>成功</li>
+		</ul>
+	</div>
+	<div class="reg_box1">
+		<div>
+			<div id="reg-control" class="btn-group" style="text-align: center; ">
+				
+			</div>
+			<div id="reg_index" class="reg_wrap">
+				<div class="reg_input_box reg-fb" id="username_reg">
+					<div class="reg_title">用户名：</div>
+					<input type="text" id="username" value="" onblur="regusername()" />
+					<div id="username-msg" class="form_explain" data-explain="6-18个字符,可使用字母、数字,需以字母开头<em></em>" style="display: none;">
+						3-13个字符,可使用字母、数字,需以字母开头<em></em>
+					</div>
+                </div>
+                <!-- 新增手机号验证 -->
+                <div class="reg_input_box reg-fb" id="phone_reg">
+					<div class="reg_title">手机号：</div>
+					<input type="text" id="phone" value="" onblur="regphone()" />
+					<div id="phone-msg" class="form_explain" data-explain="11位有效手机号<em></em>" style="display: none;">
+						11位有效手机号<em></em>
+					</div>
+                </div>
+                <div class="reg_input_box reg-fb" id="">
+					<div class="reg_title">验证码：</div>
+					<input type="text" id="verify" value="" onblur="regverify()" style="width: 165px; box-shadow: none; " />
+					<div id="verify-msg" class="form_explain" data-explain="输入验证码<em></em>" style="display: none;">
+						输入验证码<em></em>
+					</div>
+					<a href="javascript:;" class="codeImg ui-send-code" onclick="getCode()">点击获取验证码</a>
+                </div>
+                <!-- 手机号验证end -->
+
+				<!-- <div class="reg_input_box reg-fb" id="reg_first_verify">
+					<div class="reg_title">验证码：</div>
+					<input type="text" id="verify" value="" onblur="regverify()" style="width: 165px; box-shadow: none; " />
+					<div id="verify-msg" class="form_explain" data-explain="输入验证码<em></em>" style="display: none;">
+						输入验证码<em></em>
+					</div>
+					<img class="codeImg" src="{:U('Verify/code')}" title="换一张" onclick="this.src=this.src+'?t='+Math.random()">
+				</div> -->
+				<div class="reg_input_box reg-fb">
+					<div class="reg_title">登录密码：</div>
+					<input type="password" id="password" value="" onblur="regpassword()" autocomplete="off" />
+					<div id="password-msg" class="form_explain" data-explain="密码六位以上<em></em>" style="display: none;">
+						密码六位以上<em></em>
+					</div>
+				</div>
+				<!-- <div class="reg_input_box reg-fb">
+					<div class="reg_title">重复密码：</div>
+					<input type="password" id="repassword" value="" onblur="regrepassword()" autocomplete="off" />
+					<div id="repassword-msg" class="form_explain" data-explain="重复输入密码，两次需要一致<em></em>" style="display: none;">
+						重复输入密码，两次需要一致<em></em>
+					</div>
+				</div> -->
+				<div class="reg_input_box reg-fb">
+					<div class="reg_title">邀请码：</div>
+					<input id="sharecode" name="sharecode" type="text" placeholder="非必填" value="" />
+				</div>
+				<div class="reg_radio_box">
+					<label>注册即视为同意 <a href="javascript:void(0)" onclick="registerAgreement();">用户注册协议</a></label>
+                </div>
+                <div class="formbody">
+                    <button href="javascript:;" class="form_sub_btn">提交</button>
+                </div>
+				<!-- <div class="formbody">
+						<div id="slider">
+							<div id="slider_bg"></div>
+							<span id="label">>></span> <span id="labelTip"></span>
+						</div>	
+					   <input style="display:none;" type="button" class="zuocoin_btn" name="index_submit" id="loginSubmin" onclick="Update();" value="立即注册" title="立即注册" style="width: 320px;">
+				</div> -->
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+	<section class="canvas-wrap" style="min-height:700px;">
+		<div id="canvas" class="gradient"></div>
+	</section>
+
+
+<!-- <div class="autobox" style="margin-bottom: 30px">
+	<ul class="safety_tips_ul clear">
+		<li>
+			<div class="safety_img safety_img_1"></div>
+			<h4>系统可靠</h4>
+			<p>银行级用户数据加密、动态身份验证，多级风险识别控制，保障交易安全</p>
+		</li>
+		<li>
+			<div class="safety_img safety_img_2"></div>
+			<h4>资金安全</h4>
+			<p>钱包多层加密，离线存储于银行保险柜，资金第三方托管，确保安全</p>
+		</li>
+		<li>
+			<div class="safety_img safety_img_3"></div>
+			<h4>快捷方便</h4>
+			<p>充值即时、提现迅速，每秒万单的高性能交易引擎，保证一切快捷方便</p>
+		</li>
+		<li>
+			<div class="safety_img safety_img_4"></div>
+			<h4>服务专业</h4>
+			<p>专业的客服团队，400电话和24小时在线QQ，VIP一对一专业服务</p>
+		</li>
+	</ul>
+</div> -->
+
+<script>
+    var lock = true;
+
+    function getCode() {
+        var phone = $('#phone').val();
+        if(!phone) {
+            layer.msg('请输入手机号',{icon: 2});
+            return false;
+        }
+        if(!lock) {
+            layer.msg("请勿重复提交",{icon: 2});
+            return false;
+        } else {
+            lock = false;
+        }
+
+        if(!$('.codeImg').hasClass('active') && !$('.codeImg').hasClass('re-send')) {
+            $.ajax({
+                url: '/home/login/userSmS',
+                type: 'POST',
+                data: {
+                    phone: phone
+                },
+                dataType: 'json',
+                success: function(res) {
+                    //console.log(res);
+                    var timer = null;
+                    var count = 60;
+                    if(res.status== "0000") {
+
+                        timer = setInterval(function() {
+                            count-- ;
+                            if(count < 0) {
+                                clearInterval(timer);
+                                timer = null;
+                                $('.codeImg').removeClass('active').html('重新发送').addClass('re-send').css({'color':'#fff','background':'#de5959'});
+                            } else {
+                                $('.codeImg').addClass('active').html(count + '秒').css({'color':'#333','background':'none'});
+                            }
+                            
+                        },1000);
+                    } else if(res.status == "2005") {
+                        layer.msg('验证码失效',{icon: 2});
+                    } else if(res.status == '2008') {
+                    	layer.msg('手机号码已注册',{icon: 2});
+                    } else {
+                        layer.msg(res.info,{icon: 2});
+                    }
+                    lock = true;
+                },
+                error: function(msg) {  
+                    //console.log('error',msg);
+                }
+            })
+        } else if($('.codeImg').hasClass('re-send') && !$('.codeImg').hasClass('active')){
+            $.ajax({
+                url: '/home/login/reSmS',
+                type: 'POST',
+                data: {
+                    phone: phone
+                },
+                dataType: 'json',
+                success: function(res) {
+                    //console.log(res);
+                    var timer = null;
+                    var count = 60;
+                    if(res.status== "0000") {
+
+                        timer = setInterval(function() {
+                            count-- ;
+                            if(count < 0) {
+                                clearInterval(timer);
+                                timer = null;
+                                $('.codeImg').removeClass('active').html('重新发送').addClass('re-send').css({'color':'#fff','background':'#de5959'});
+                            } else {
+                                $('.codeImg').addClass('active').html(count + '秒').css({'color':'#333','background':'none'});
+                            }
+                            
+                        },1000);
+                    } else if(res.status == "2005") {
+                        layer.msg('验证码失效',{icon: 2});
+                    } else {
+                        layer.msg(res.info,{icon: 2});
+                    }
+
+                    lock = true;
+                },
+                error: function(msg) {  
+                    //console.log('error',msg);
+                }
+            })
+        } else {
+            return false;
+        }
+        
+    }
+
+	function registerAgreement(){
+		layer.open({
+			type:2,
+			skin:'layui-layer-rim', //加上边框
+			area:['800px','600px'], //宽高
+			title:'注册协议', //不显示标题
+			content:"{:U('Login/webreg')}"
+		});
+	}
+
+
+	$('input').focus(function(){
+		var t=$(this);
+		if(t.attr('type')=='text'||t.attr('type')=='password')
+			t.css({'box-shadow':'0px 0px 3px #1583fb','border':'1px solid #1583fb'});
+		if(t.val()==t.attr('placeholder'))
+			t.val('');
+	});
+	$('input').blur(function(){
+		var t=$(this);
+		if(t.attr('type')=='text'||t.attr('type')=='password')
+			t.css({'box-shadow':'none','border':'1px solid #e1e1e1'});
+		if(t.attr('type')!='password'&&!t.val())
+			t.val(t.attr('placeholder'));
+	});
+	$('.reg_input_box input').each(function(i,d){
+		$(d).focus(function(){
+			var oRegMsg=$('#'+$(this).attr('id')+'-msg');
+			oRegMsg.attr('class')=='form_explain_error'?oRegMsg.attr('class','form_explain').html(oRegMsg.attr('data-explain')).show():oRegMsg.show();
+		})
+		$(d).blur(function(){
+			var oRegMsg=$('#'+$(this).attr('id')+'-msg');
+			$(this).parent().find('.form_explain').hide();
+		})
+	})
+	var mbTest_username=/^(?![^a-zA-Z]+$)(?!\D+$).{5,15}$/;
+	var mbTest_password=/^[a-zA-Z0-9_]{5,15}$/;
+
+
+	//输入框消息
+	function formMsg(o, status, msg){
+		$('#'+o+'-msg').attr('class', 'form_explain_'+(status?'pass':'error')).html((typeof msg == 'undefined'? '': msg)+'<em></em>').show();
+		return true;
+	}
+
+
+	function regusername(){
+		var username = $('#username').val();
+		if(username==""||username==null){
+			formMsg('username', 0, '请输入用户名');
+			return false;
+		}
+		$.post("{:U('Login/chkUser')}",{username:username},function(ret){
+			if(ret.status){
+				formMsg('username', 1);
+				return true;
+			}else{
+				formMsg('username', 0, ret.info);
+				return false;
+			}
+		},'json');
+	}
+
+    function regphone(){
+        var reg = /^1[3|4|5|7|8][0-9]{9}$/;
+		var phone = $('#phone').val();
+		if(phone==""||phone==null){
+			formMsg('phone', 0, '请输入手机号');
+			return false;
+		} else if(!reg.test(phone)){
+            formMsg('phone', 0, '手机号不正确');
+			return false;
+        } else {
+            formMsg('phone', 1);
+			return true;
+        }
+		
+	}
+
+	function regverify(){
+		var verify = $('#verify').val();
+		if(verify==""||verify==null){
+			formMsg('verify', 0, '请输入验证码');
+			return false;
+		}else{
+			formMsg('verify', 1);
+			return true;
+		}
+	}
+
+	function regpassword(){
+		var password = $('#password').val();
+		if(password==""||password==null){
+			formMsg('password', 0, '请输入登录密码');
+			return false;
+		}else{
+			if(!mbTest_password.test(password)){
+				formMsg('password', 0, '登录密码格式错误 (6~16个字符)');
+				return false;
+			}else{
+				formMsg('password', 1);
+				return true;
+			}
+		}
+	}
+	
+	// function regrepassword(){
+	// 	var password = $('#password').val();
+	// 	var repassword = $('#repassword').val();
+	// 	if(repassword==""||repassword==null){
+	// 		formMsg('repassword', 0, '请输入确认密码');
+	// 		return false;
+	// 	}else{
+	// 		if(!mbTest_password.test(repassword)){
+	// 			formMsg('repassword', 0, '登录密码格式错误 (6~16个字符)');
+	// 			return false;
+	// 		}else{
+	// 			if(password!=repassword){
+	// 				formMsg('repassword', 0, '确认登录错误');
+	// 				return false;
+	// 			}else{
+	// 				formMsg('repassword', 1);
+	// 				return true;
+	// 			}
+	// 		}
+	// 	}
+	// }
+	
+
+	function Update(){
+		var username=$("#username").val();
+        var phone = $("#phone").val();
+		var password=$("#password").val();
+		// var repassword=$("#repassword").val();
+		var sharecode=$("#sharecode").val();
+		var verify=$("#verify").val();
+
+		if(username==""||username==null){
+			formMsg('username', 0, '请输入用户名');
+			// slider.init();
+			return false;
+		}
+        if(phone==""||phone==null){
+			formMsg('phone', 0, '请输入手机号');
+			// slider.init();
+			return false;
+		}
+		if(password==""||password==null){
+			formMsg('password', 0, '请输入登录密码');
+			// slider.init();
+			return false;
+		}
+		// if(repassword==""||repassword==null){
+		// 	formMsg('repassword', 0, '请输入确认密码');
+		// 	slider.init();
+		// 	return false;
+		// }
+		// if(password!=repassword){
+		// 	formMsg('repassword', 0, '确认密码错误');
+		// 	slider.init();
+		// 	return false;
+		// }
+		
+		if(verify==""||verify==null){
+			formMsg('verify', 0, '请输入验证码');
+			// slider.init();
+			return false;
+		}
+		$.post("{:U('Login/upregister')}",{username:username,password:password,phone:phone,sharecode:sharecode,verify:verify},function(data){
+			if(data.status==1){
+
+				layer.msg(data.info,{icon:1});
+				$.cookies.set('cookie_username',username);
+				window.location='/Login/register2';
+
+			}else{
+				layer.msg(data.info,{icon:2});
+				if(data.url){
+					window.location=data.url;
+				}else{
+					// slider.reset();
+				}
+			}
+		},"json");
+	}
+	
+	$('.form_sub_btn').click(function(){
+        Update();
+    })
+
+	//$(function () {
+		// var slider = new SliderUnlock("#slider",{
+		// 		initLabelTip : "拖动滑块提交",
+		// 		successLabelTip : "欢迎注册本网站"	
+		// 	},function(){
+		// 		Update();
+		// 	});
+		// slider.init();
+	//})
+
+	
+	
+</script>
+<include file="Public:footer" />

@@ -1,0 +1,370 @@
+<include file="Public:header" />
+<script src="__PUBLIC__/Home/js/datepicker.min.js"></script>
+<div class="autobox">
+	<div class="now">
+		<a href="/" class="orange">首页</a> &gt; <a href="/finance/" class="orange">财务中心</a> &gt; 成交查询
+	</div>
+	<div class="assets_center clear po_re zin70">
+		<!--左侧菜单-->
+		<include file="Finance:left" />
+		<!--右侧内容-->
+		<div class="assets-content assets_content w900 right bg_w">
+
+			<div class="ui-title">
+				<span>成交查询</span>
+			</div>
+			<include file="Public:alert" />
+
+            <!-- <div class="gui-accounts-container">
+                <div class="gui-account <eq name='cate' value='1'>slected</eq>" style="padding-top: 0;height: 50px;line-height: 50px;" data-cate="1">
+                    <span>币币账户</span>
+                </div>
+                <div class="gui-account <eq name='cate' value='2'>slected</eq>" style="padding-top: 0;height: 50px;line-height: 50px;" data-cate="2">
+                    <span>合约账户</span>
+                </div>
+            </div> -->
+            <if condition="$cate == 1">
+            <!-- 币币账户 table列表 -->
+			<div class="cnyin_record">
+				<div class="f_body">
+					<div class="f_body_main">
+						<div class="f_tab_body">
+							<div>
+								<table class="f_table" id="investLog_content">
+									<thead>
+										<tr>
+											<th><img src="__UPLOAD__/coin/{$coin_list[$market_list[$market]['xnb']]['img']}" alt="" style="margin-bottom: -5px; width: 22px;" />
+												<select name="market-selectTest" id="market-selectTest">
+													<volist name="market_list" id="vo">
+														<eq name="market" value="$key">
+															<option value="{$vo['name']}" selected="selected" title="{$coin_list[$vo['xnb']]['title']}({$vo['xnb']|strtoupper}/{$vo['rmb']|strtoupper})">
+                                                                {$coin_list[$vo['xnb']]['title']}({$vo['xnb']|strtoupper}/{$vo['rmb']|strtoupper})
+                                                            </option>
+															<else />
+															<option value="{$vo['name']}" title="{$coin_list[$vo['xnb']]['title']}({$vo['xnb']|strtoupper}/{$vo['rmb']|strtoupper})">
+                                                                {$coin_list[$vo['xnb']]['title']}({$vo['xnb']|strtoupper}/{$vo['rmb']|strtoupper})
+                                                            </option>
+														</eq>
+													</volist>
+												</select></th>
+											<th>成交时间</th>
+											<th><select name="type-selectTest" id="type-selectTest">
+													<option value="0" <eq name="type" value="0">selected</eq>>-全部-
+													</option>
+													<option value="1" <eq name="type" value="1">selected</eq>>买入
+													</option>
+													<option value="2" <eq name="type" value="2">selected</eq>>卖出
+													</option>
+												</select></th>
+											<th>成交价格</th>
+											<th>成交数量</th>
+											<th>总金额</th>
+											<th>手续费</th>
+										</tr>
+									</thead>
+									<tbody>
+										<!-- <volist name="list" id="vo">
+											<tr>
+												<td>{$coin_list[$market_list[$vo['market']]['xnb']]['title']}
+													({$market_list[$vo['market']]['xnb']|strtoupper}/{$market_list[$vo['market']]['rmb']|strtoupper})</td>
+
+												<td>{$vo.addtime|date='m-d H:i:s',###}</td>
+												<td>
+													<eq name="vo['userid']" value="$vo['peerid']">
+														<font class="buy">自买</font>
+														<font class="sell">自卖</font>
+														<else />
+														<if condition="($vo['userid'] eq $userid) AND ($vo['type'] eq 1)">
+															<font class="buy">买入</font>
+														</if>
+														<if condition="($vo['userid'] eq $userid) AND ($vo['type'] eq 2)">
+															<font class="buy">买入</font>
+														</if>
+														<if condition="($vo['peerid'] eq $userid) AND ($vo['type'] eq 1)">
+															<font class="sell">卖出</font>
+														</if>
+														<if condition="($vo['peerid'] eq $userid) AND ($vo['type'] eq 2)">
+															<font class="sell">卖出</font>
+														</if>
+													</eq>
+												</td>
+												<td>{$vo['price']|NumToStr}</td>
+												<td>{$vo['num']|NumToStr}</td>
+												<td>{$vo['mum']|NumToStr}</td>
+												<td>{$vo['fee_buy']}</td>
+											</tr>
+										</volist> -->
+									</tbody>
+								</table>
+								<div class="pages"> </div>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+            <else/>
+            <!-- 合约账户 table列表 -->
+            <div class="cnyin_record f_body">
+                    <table class="f_table" id="investLog_content">
+                        <thead>
+
+                            <tr>
+                                <th width="">时间</th>
+                                <th width="">合约</th>
+                                <th width="">成交类型</th>
+                                <th width="">方向</th>
+                                <th width="">成交数量</th>
+                                <th width="">成交价格</th>
+                                <th width="">价值</th>
+                                <th width="">佣金费率</th>
+                                <th width="">已付费用</th>
+                                <th width="">委托种类</th>
+                                <th width="">委托数量</th>
+                                <th width="">为成交数量</th>
+                                <th width="">委托价格</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr>
+                                <td width="">{$vo.ctime}</td>
+                                <td width="">{$vo.pair}</td>
+                                <td width="">{$vo.trade_type}</td>
+                                <td width="">{$vo.bid_flag}</td>
+                                <td width="">{$vo.amount}</td>
+                                <td width="">{$vo.price}</td>
+                                <td width="">{$vo.value}BTC</td>
+                                <td width="">{$vo.taker_fee_ratio}%</td>
+                                <td width="">0BTC</td>
+                                <td width="">{$vo.close_type}</td>
+                                <td width="">{$vo.trade_amount}</td>
+                                <td width="">{$vo.remaining}</td>
+                                <td width="">{$vo.trade_price}</td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                    <div class="pages">{$page}</div>
+                </div>
+            </if>
+
+		</div>
+	</div>
+</div>
+<script>
+    var index = true; // 首次渲染
+    var pageCount = 0; // 分页总数
+    var count = 0; // 数据总条数
+    var current = 1; // 当前页码
+    var style = 'default'; //分页显示模式
+
+	$(function() {
+        if('{$cate}' == 1) {
+            init();
+        }
+	})
+
+    function loading() { // 加载动画
+        layer.load(1, {
+			shade: [0.1,'#fff'] //0.1透明度的白色背景
+		});
+    }
+
+	function init() { // 初始化数据
+        loading();
+        getDatas();
+    }
+
+    // 选择查询xnb
+    $("#type-selectTest,#market-selectTest").change(function () {
+        current = 1;
+        loading();
+        getDatas();
+		// window.location = '/Finance/mycj/type/' + type + '/market/' + market + '.html';
+	});
+
+    // 定义获取数据方法
+	function getDatas() {
+
+        var data = {
+            submit: {
+                userid: {$Think.session.userId},
+                market: $("#market-selectTest option:selected").val(),
+                type: $("#type-selectTest option:selected").val(),
+                page: current
+            },
+            title: $("#market-selectTest option:selected").attr('title')
+        }
+
+		$.ajax({
+			url: '/finance/cjdata',
+			dataType: 'json',
+			type: 'GET',
+			data: data.submit,
+			success: function (res) {
+
+				var html;
+
+				for(var i=0;i< res.data.length;i++) {
+					html += '<tr>'+
+								'<td>'+ data.title +'</td>'+
+								'<td>'+ timeStamp2String(res.data[i].addtime * 1000) +'</td>'+
+                                '<td>'+ (res.data[i].type > 1 ? '<font class="sell">卖出</font>' : '<font class="buy">买入</font>') + '</td>'+ 
+								'<td>'+ res.data[i].price +'</td>'+
+								'<td>'+ res.data[i].num +'</td>'+
+								'<td>'+ res.data[i].mum +'</td>'+
+								'<td>'+ res.data[i].fee_buy +'</td>'+
+							'</tr>'
+				}
+                $('#investLog_content').find('tbody').html(html);
+                
+                if(index) {
+                    if(res.count_page > 1) {
+                        pageCount = res.count_page;
+                        count = res.count;
+
+                        $('.pages').html(pageComponent());
+
+                    } else {
+                        $('.pages').html(res.count + '条记录 1/1 页');
+
+                        
+                    }
+                }
+				
+                layer.closeAll("loading");
+
+                index = false;
+			},
+			error: function(msg) {
+				console.log('error',msg);
+			}
+		})
+    }
+    
+
+
+    // 分页
+    function pageComponent() {
+            console.log('pageCount',pageCount)
+            console.log('count',count)
+            console.log('current',current)
+            
+            
+            var page = '';
+            if(index) {
+                style = pageCount > 9 ? '2' : '1'
+            }
+        
+            if(style == 1) { // 展示全部页码模式
+
+                page =  count +'条记录 '+ current +'/'+ pageCount +' 页'+ 
+                    '<a class="next" pageid='+ (parseInt(current) + 1) +'>下一页</a>'+  
+                    forPage()  
+
+            } else if(style == 2) { // 含有。。。省略模式
+
+                page =  count +'条记录 '+ current +'/'+ pageCount +' 页'+ 
+                        '<a pageid="1" >首页</a>' +
+                        '<a class="next" pageid='+ (parseInt(current) + 1) +'>下一页</a>'+
+                        forPage() +
+                        '<a class="all">...</a>'+
+                        '<a pageid='+ pageCount +'>最后一页</a>'
+
+            }
+
+            return  page;
+    }
+
+    // 分页页码循环
+    function forPage() {
+        
+        var html = '';
+
+        if(style == 1) {
+
+            for(var i=1;i<=pageCount;i++) {
+                    
+                html += '<a class="'+ (current == i ? 'current': '') +'" pageid='+ i +'>'+ i +'</a>'
+                    
+            }
+        } else if(style == 2){
+            
+            for(var i=1;i<=pageCount;i++) {
+                if(i<=5) {
+                    html += '<a class="'+ (current == i ? 'current': '') +'" pageid='+ i +'>'+ i +'</a>'
+                }
+            }   
+        }
+        
+        
+        return html;
+    }
+
+    // 分页DOM操作
+    $('body').on('click','.pages a',function() {
+
+        if(!$(this).hasClass('current') && !$(this).hasClass('all')){   
+
+            current = $(this).attr('pageid');
+            
+            if(current <= pageCount) {
+                loading();
+                getDatas();
+            }
+            
+
+            if(!$(this).hasClass('next')) {
+
+                if(style == 2 && current > 5) {
+                    style = 1;
+                }
+                 
+                $('.pages').html(pageComponent());
+
+            } else {
+                style = 1;
+
+                if(current <= pageCount) {
+                    $('.pages').html(pageComponent());
+                }
+                
+            }
+            
+        } else if($(this).hasClass('all')) { // 点击。。。 展示全部页码
+            style = 1;
+            $('.pages').html(pageComponent());
+        }
+    })
+
+
+
+
+    // 日期格式化
+    function timeStamp2String(time){
+        var datetime = new Date();
+        datetime.setTime(time);
+        var year = datetime.getFullYear();
+        var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+        var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+        var hour = datetime.getHours()< 10 ? "0" + datetime.getHours() : datetime.getHours();
+        var minute = datetime.getMinutes()< 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
+        var second = datetime.getSeconds()< 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
+        return year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
+    }
+
+
+    // 选择账户类型 
+    $('.gui-accounts-container').on('click','.gui-account',function() {
+         var cate = $(this).data('cate');
+         window.location.href = "/finance/mycj.html?cate=" + cate;
+     })
+	
+</script>
+
+<script>
+	//菜单高亮
+	$('#finance_box').addClass('active');
+	$('#finance_mycj').addClass('active');
+</script>
+<include file="Public:footer" />

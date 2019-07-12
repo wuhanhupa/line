@@ -1,0 +1,16 @@
+[ 2019-07-08T00:00:01+08:00 ]  
+ERR: 1146:Table 'bnb.btchanges_notice' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `btchanges_notice`
+
+[ 2019-07-08T06:00:01+08:00 ]  
+ERR: 1146:Table 'bnb.btchanges_notice' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `btchanges_notice`
+
+[ 2019-07-08T12:00:02+08:00 ]  
+ERR: 1146:Table 'bnb.btchanges_notice' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `btchanges_notice`
+
+[ 2019-07-08T18:00:01+08:00 ]  
+ERR: 1146:Table 'bnb.btchanges_notice' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `btchanges_notice`
+

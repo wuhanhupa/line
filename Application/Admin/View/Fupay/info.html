@@ -1,0 +1,92 @@
+<include file="Public:header" />
+<div id="main-content">
+    <div id="top-alert" class="fixed alert alert-error" style="display: none;">
+        <button class="close fixed" style="margin-top: 4px;">&times;</button>
+        <div class="alert-content">警告内容</div>
+    </div>
+    <div id="main" class="main">
+        <div class="main-title-h">
+            <span class="h1-title">用户支付信息</span>
+        </div>
+
+        <div class="tab-wrap">
+
+            <div class="tab-content">
+                <form id="form" action="{:U('Fupay/over')}" method="post" class="form-horizontal">
+                    <div id="tab" class="tab-pane in tab">
+                        <div class="form-item cf">
+                            <table>
+                                <tr class="controls">
+                                    <td class="item-label">订单编号 :</td>
+                                    <td>{$order.order_no}</td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">订单总额 :</td>
+                                    <td>{$order.price}</td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">冻结USDT数量 :</td>
+                                    <td>{$order.mum}</td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">用户姓名 :</td>
+                                    <td>{$order.truename}</td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">绑定银行 :</td>
+                                    <td>{$bank.bank}</td>
+                                    <td class="item-note"></td>
+                                </tr>
+
+                                <tr class="controls">
+                                    <td class="item-label">银行卡号 :</td>
+                                    <td>{$bank.bankcard}</td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">提交时间 :</td>
+                                    <td>{$order.ctime|addtime}</td>
+                                    <td class="item-note"></td>
+                                </tr>
+
+                                <tr class="controls">
+                                    <td class="item-label">实际扣除数量 :</td>
+                                    <td><input type="text" class="form-control input-10x" name="num"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <input type="hidden" name="id" value="{$order.id}">
+                                <tr class="controls">
+                                    <td>
+                                        <button class="btn btn-danger">确认出金</button>
+                                        <a href="{:U('Fupay/check?id='.$order['id'].'&status=3')}" class="btn btn-primary">取消申请</a>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                </form>
+                <script type="text/javascript">
+                    //提交表单
+                    $('#submit').click(function(){
+                        $('#form').submit();
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        //主导航高亮
+        $('.config-box').addClass('current');
+        //边导航高亮
+        $('.config-coin').addClass('current');
+    });
+</script>
+<include file="Public:footer" />

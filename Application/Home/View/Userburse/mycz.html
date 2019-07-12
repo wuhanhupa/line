@@ -1,0 +1,167 @@
+<include file="Public:header" />
+<div class="autobox">
+	<div class="now">
+		<a href="/" class="orange">首页</a> &gt;
+		<a href="/finance/" class="orange">财务中心</a> &gt; 充值
+	</div>
+	<div class="assets_center clear po_re zin70">
+		<!--左侧菜单-->
+		<include file="Finance:left" />
+		<!--右侧内容-->
+		<form id="form-cnyin" class="assets-content assets_content w900 right bg_w">
+			<div class="ui-title">
+				<span>充值</span>
+			</div>
+			<include file="Public:alert" />
+			<div class="choosepaymethod">
+				<div class="choosebanks" style="margin-top: 10px;">
+					<div class="methodway clearfix">
+						<div class="w_div clearfix">
+							<div class="w1">充值币种：</div>
+							<div class="w2">
+								{$market}
+							</div>
+						</div>
+						<div class="w_div clearfix">
+							<div class="w1">充值地址：</div>
+							<div class="w2">
+								<empty name="addr">
+									地址未生成，请刷新页面生成地址
+									<else /> {$addr}
+								</empty>
+							</div>
+						</div>
+						<div class="w_div clearfix">
+							<div class="w1">充值二维码：</div>
+							<div class="w2">
+								<img src="{:U('userburse/code', 'addr='.$addr)}" width='150px' height="130px">
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="f_body">
+					<table class="f_table" id="investLog_content">
+						<thead>
+							<tr>
+								<th width="">充值时间</th>
+								<th width="">区块hash</th>
+								<th width="">充值方式</th>
+								<th width="">充值金额</th>
+								<th width="">实际到账</th>
+								<th width="">状态</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<volist name="list" id="vo">
+								<tr>
+									<td>{$vo.addtime|date='Y-m-d H:i:s',###}</td>
+									<td>{$vo.tradeno}</td>
+									<td>钱包转入</td>
+									<td>{$vo['num']|default="0.00"}</td>
+									<td>{$vo['mum']|default="0.00"}</td>
+									<td>
+										<eq name="vo.status" value="0">
+											充值成功
+										</eq>
+										<eq name="vo.status" value="1">
+											充值成功
+										</eq>
+										<eq name="vo.status" value="2">
+											充值成功
+										</eq>
+									</td>
+								</tr>
+							</volist>
+						</tbody>
+					</table>
+					<div class="pages">{$page}</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<br>
+<br>
+<script>
+	$('#finance_box').addClass('active');
+	$('#finance_index').addClass('active');
+
+	function myczHuikuan(id) {
+		$.post("{:U('Finance/myczHuikuan')}", {
+			id: id
+		}, function(data) {
+			if (data.status == 1) {
+				layer.msg(data.info, {
+					icon: 1
+				});
+				window.location.reload();
+			} else {
+				layer.msg(data.info, {
+					icon: 2
+				});
+			}
+		}, "json");
+	}
+
+	function myczChakan(id) {
+
+		layer.open({
+			title: '人民币充值',
+			type: 2,
+			area: ['650px', '500px'],
+			content: ["{:U('Pay/mycz')}?id=" + id, 'no']
+		});
+
+	}
+
+	function myczUp() {
+
+		var mbTest_num = /^([1-9]{1}\d*)(\.(\d){1,2})?$/;
+		var type = $('#mycz_type option:selected').val();
+		var num = $("#mycz_amount").val();
+		if (type == "" || type == null) {
+			layer.tips('请选择充值方式', '#mycz_type', {
+				tips: 3
+			});
+			return false;
+		}
+		if (num == "" || num == null) {
+			layer.tips('请输入充值金额', '#mycz_amount', {
+				tips: 3
+			});
+			return false;
+		} else {
+			num = num + $('#random').html();
+		}
+		if (!mbTest_num.test(num)) {
+			layer.tips('充值金额格式错误 (人民币格式)', '#mycz_amount', {
+				tips: 3
+			});
+			return false;
+		}
+		$.post("{:U('Finance/myczUp')}", {
+			type: type,
+			num: num
+		}, function(data) {
+			if (data.status == 1) {
+				layer.open({
+					title: '人民币充值',
+					type: 2,
+					area: ['650px', '500px'],
+					content: ["{:U('Pay/mycz')}?id=" + data.url.id, 'no']
+				});
+			} else {
+				layer.msg(data.info, {
+					icon: 2
+				});
+				if (data.url) {
+					window.location = data.url;
+				}
+			}
+		}, "json");
+	}
+</script>
+<include file="Public:footer" />

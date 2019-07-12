@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>详情</title>
+    <meta name="description" content="description">
+    <meta name="keywords" content="keywords">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/mobile.css"/>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/vue.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/mobile_main.js"></script>
+</head>
+
+<body class="index">
+    <div id="app">
+        <app-component></app-component>
+    </div>
+    <script id="app-template" type="text/x-template">
+        <div>
+            <header class="gui-com-header" v-if="showheader">
+                <a href="javascript:;" class="back-btn" v-on:touchstart="history">返回</a>
+                <h4>详情</h4>
+            </header>
+            <div class="gui-container">
+                <div class="gui-content-header">
+                    <h4>{{ detailDatas.title }}</h4>
+                    <p>{{ detailDatas.addtime }}</p>
+                    <!-- <p>发布人：GET交易所</p> -->
+                </div>
+                <div class="gui-content-text" v-html="detailDatas.content"></div>
+            </div>
+            <div class="gui-loading" v-show="showLoading">
+                <img src="__PUBLIC__/Home/images/loading.gif" alt="加载中">
+                <p>加载中...</p>
+            </div>
+        </div>
+    </script>
+    <script>
+        Vue.component('app-component', {
+            template: '#app-template',
+            data: function() {
+                return {
+                    id: 0,
+                    detailDatas: '',
+                    showLoading: false,
+                    showheader: true,
+                }
+            },
+            watch: {},
+            created: function() {
+                var vm = this;
+                vm.queryId();
+                vm.getDatas(vm.id);
+            },
+            methods: {
+                queryId: function() {
+                    this.id = window.location.search.replace('?','').split('=')[1].split('&')[0];
+                    this.showheader = window.location.search.replace('?','').split('=')[1].split('&')[1] ? false : true;
+                },
+                getDatas: function(id) {
+                    vm = this;
+                    vm.showLoading = true;
+                    $.ajax({
+                        url: '/Papi/help/details?id='+ id,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(res) {
+                            vm.showLoading = false;
+                            res.addtime = '发布时间：' + res.addtime;
+                    
+                            vm.detailDatas = res;
+                        },
+                        error: function(msg) {
+                            vm.showLoading = false;
+                            console.log('erro',msg);
+                        }
+                    })
+                },
+                history: function() {
+                    window.history.go(-1);
+                }
+            },
+            mounted: function(){
+                var vm = this;
+                
+            }
+        });
+        new Vue({
+            el: '#app',
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>关于我们页面</title>
+    <meta name="description" content="description">
+    <meta name="keywords" content="keywords">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/mobile.css"/>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/vue.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/mobile_main.js"></script>
+</head>
+
+<body class="index">
+    <div id="app">
+        <app-component></app-component>
+    </div>
+    <script id="app-template" type="text/x-template">
+        <div>
+            <header class="gui-com-header">
+                <a href="javascript:;" class="back-btn" v-on:touchstart="goBack">返回</a>
+                <h4>关于我们</h4>
+            </header>
+            <div class="gui-container">
+                <div class="gui-content-text" v-html="contentDatas.des"></div>
+            </div>
+            <div class="gui-loading" v-show="showLoading">
+                <img src="__PUBLIC__/Home/images/loading.gif" alt="加载中">
+                <p>加载中...</p>
+            </div>
+        </div>
+    </script>
+    <script>
+        Vue.component('app-component', {
+            template: '#app-template',
+            data: function() {
+                return {
+                    contentDatas: '',
+                    showLoading: false,
+                }
+            },
+            watch: {},
+            created: function() {
+                this.getDatas();
+            },
+            methods: {
+                getDatas: function() {
+                    vm = this;
+                    vm.showLoading = true;
+                    $.ajax({
+                        url: '/Papi/help/about_index',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(res) {
+                            vm.showLoading = false;
+                            vm.contentDatas = res;
+                        },
+                        error: function(msg) {
+                            vm.showLoading = false;
+                            console.log('erro',msg);
+                        }
+                    })
+                },
+                goBack: function() {
+                    jsWebView()
+                }
+            },
+            mounted: function() {
+                var vm = this;
+            }
+        });
+        new Vue({
+            el: '#app',
+        });
+    </script>
+</body>
+
+</html>

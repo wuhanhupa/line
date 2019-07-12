@@ -1,0 +1,97 @@
+<include file="Public:header" />
+<div class="autobox">
+ <div class="now">
+  <a href="/" class="orange">首页</a> &gt; <a href="/user/index.html" class="orange">安全中心 </a> &gt; 修改交易密码
+ </div>
+ <div class="assets_center clear po_re zin70">
+  <!--左侧菜单-->
+  <include file="User:left" />
+  <!--右侧内容-->
+    <div class="assets-content assets_content w900 right bg_w">
+        <div class="ui-title">
+            <span>修改交易密码</span>
+        </div>
+        <include file="Public:alert" />
+
+   <div class="pwtrade">
+    <form id="form-pwtrade">
+     <dl>
+      <dt>手机号：</dt>
+      <dd>
+       <input type="text" id="moble" maxlength="11">
+      </dd>
+      <dd style="padding-left: 15px">
+          <button id="getCodeButton" class="ui-button" type="button" onclick="ui.getCode()">发送验证码</button>
+      </dd>
+     </dl>
+     <dl>
+      <dt>验证码：</dt>
+      <dd>
+       <input type="text" id="verify">
+      </dd>
+     </dl>
+     <dl>
+      <dt>输入新密码：</dt>
+      <dd>
+       <input type="password" id="newpaypassword">
+      </dd>
+     </dl>
+     <dl>
+      <dt></dt>
+      <dd style="width: 200px;">
+        <button class="ui-button ui-button-block" type="button" onclick="Update()">保存</button>
+      </dd>
+     </dl>
+    </form>
+   </div>
+  </div>
+ </div>
+</div>
+<br>
+<br>
+<script type="text/javascript" src="__PUBLIC__/Home/js/util.js"></script>
+<script>
+
+	function Update(){
+        var phone = $("#moble").val();
+        var verify = $("#verify").val();
+        var newpaypassword = $("#newpaypassword").val();
+        if(!phone){
+            layer.msg("手机号不能为空", {icon:2});
+            return false
+        }
+        if(!verify){
+            layer.msg("验证码不能为空", {icon:2});
+            return false
+        }
+        if(!newpaypassword){
+            layer.msg("密码不能为空", {icon:2});
+            return false
+        }
+        $.ajax({
+            url : "/User/fgpaypassword",
+            type : "post",
+            data : {
+                phone : phone,
+                verify : verify,
+                newpaypassword : newpaypassword
+            },
+            dataType : "json",
+            success : function(res){
+                if(res.status == 0){
+                    layer.msg(res.info,{icon:2});
+                }else{
+                    layer.msg(res.info,{icon:1});
+                    setTimeout(function(){
+                        window.location="{:U('User/paypassword')}"
+                    }, 2000);
+                }
+            }
+        });
+	}
+</script>
+<script>
+	$('#user_box').addClass('active');
+	$('#user_paypassword').addClass('active');
+</script>
+<include file="Public:footer" />

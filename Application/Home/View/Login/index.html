@@ -1,0 +1,79 @@
+<include file="Public:header" />
+<div class="wrapper">
+	<div class="register">
+		<table style="margin: 0 auto;">
+			<tbody>
+				<tr>
+					<td align="right">用户名：</td>
+					<td><div class="formbody" style="width: 250px;">
+							<i class="icon_username"></i>
+							<input type="text" class="username" id="username" name="username" placeholder="请输入用户名或手机号" autocomplete="off" />
+						</div></td>
+				</tr>
+				<tr>
+					<td align="right">登录密码：</td>
+					<td><div class="formbody" style="width: 250px;">
+							<i class="icon_password"></i>
+							<input type="password" class="password" id="password" name="password" placeholder="请输入登录密码" autocomplete="off" />
+						</div></td>
+				</tr>
+				<tr>
+					<td align="right">验证码：</td>
+					<td><div class="formbody">
+							<i class="icon_code"></i>
+							<input type="text" class="code" id="verify" name="code" placeholder="请输入验证码" style="width: 100px;"><img id="codeImg" src="{:U('Verify/code')}" width="145" height="42" onclick="this.src=this.src+'?t='+Math.random()" style="float: left; cursor: pointer;" title="换一张">
+						</div></td>
+				</tr>
+				<tr>
+					<td align="right"></td>
+					<td><div class="autologin">
+							<a href="/Login/findpwd.html" class="reg_floatr" style="float: right;">忘记密码?</a>
+						</div></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>
+						<button class="ui-button ui-button-block" id="loginSubmit" onclick="user.login()" type="button" name="index_submit" >立即登录</button>
+					</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td><div class="formbody">
+							<span style="display: block; margin: 10px auto; width: 150px; font-size: 14px;">
+								没有帐号？
+								<a href="{:U('Login/register')}"> 免费注册</a>
+							</span>
+						</div></td>
+					<td>&nbsp;</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<script>
+	//记住账号
+	var cookieValue=$.cookies.get('cookie_username');
+	if(cookieValue!=''&&cookieValue!=null){
+		$("#username").val(cookieValue);
+		$("#autoLogin").attr("checked",true);
+	}
+
+	$(function(){
+		if(document.body.offsetHeight < window.innerHeight){
+			var offset = window.innerHeight - document.body.offsetHeight;
+			$(".wrapper").css("marginBottom", offset + "px");
+		}
+	})
+
+	var loginClick = function() {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if (e && e.keyCode == 13) {
+            user.login();
+        }
+    }
+    $('#username').bind('keydown', loginClick);
+    $('#password').bind('keydown', loginClick);
+    $('#verify').bind('keydown', loginClick);
+</script>
+<include file="Public:footer" />

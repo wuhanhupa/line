@@ -1,0 +1,588 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>新版</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/Public/Home/css/mobile.css"/>
+    <style>
+        body {
+            background: #fff;
+        }
+		#main {
+			width: 100%;
+			height: 100%;
+			margin: 0 auto;
+            box-sizing: border-box;
+
+		}
+        .time-container {
+            overflow: hidden;
+            position: absolute;
+            top: 10px;
+            left: 50px;
+        }
+        .time-container li {
+            padding: 0 5px;
+            float: left;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+        .time-container li.active {
+            color: #d21212;
+        }
+        .header-box {
+            overflow: hidden;
+            height: 40px;
+        }
+        .header-box .item{
+            float: left;
+            color: #999;
+            height: 40px;
+            box-sizing: content-box;
+        }
+        .header-box .item:nth-child(1) {
+            width: 50%;
+        }
+        .header-box .item:nth-child(2) {
+            width: 25%;
+        }
+        .header-box .item:nth-child(3) {
+            width: 25%;
+        }
+        .header-box .market-price {
+            line-height: 40px;
+            text-align: center;
+        }
+        .header-box .item p {
+            color: #fd5667;
+            font-size: 26px;
+        }
+        .header-box .item span{ 
+            display: block;
+            font-size: 12px;
+            line-height: 20px;
+            color: #7678a3;
+        }
+	</style>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main"></div>
+    <ul class="time-container">
+        <li data-time="1440">日线</li>
+        <li data-time="360">6小时</li>
+        <li data-time="60">1小时</li>
+        <li data-time="30">30分钟</li>
+        <li data-time="15">15分钟</li>
+        <li class="active" data-time="5">5分钟</li>
+    </ul>
+
+    <div class="gui-loading">
+        <img src="/Public/Home/images/loading.gif" alt="加载中">
+        <p>加载中...</p>
+    </div>
+
+    <!-- 引入 echarts.js -->
+    <script type="text/javascript" src="/Public/Home/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/Public/Home/js/echarts.min.js"></script>
+    <script type="text/javascript">
+        var myChart;
+        var k_Datas;
+        var sw = true;
+        var time = '5';
+        var market = '<?php echo ($market); ?>';
+        var timer = null;
+        var upcolor = '#d45858';
+        var downcolor = '#008069';
+        var kws = null;
+        var ws_on = false;
+        
+
+        $(window).resize(function(){
+			document.location.reload();
+        });
+
+
+		getTrendData();
+        kws = new WebSocket("wss://wss.gte.io:3346");
+
+         kws.onopen = function() {
+            console.log('k 开启');
+            ws_on = true;
+            kws.send('spot:kline:'+ market +':'+ time +'');
+        }
+
+        kws.onmessage = function(res) {
+            res = JSON.parse(res.data);
+            if(res['kline'+ $('.time-container li.active').data('time')]) {
+                $('.gui-loading').hide();
+
+                var res = res['kline'+ $('.time-container li.active').data('time')];
+
+                var kdatas = formatData(res);
+                if(sw) {
+                    sw = false;
+                    init(kdatas.data,kdatas.dates,kdatas.volumes);
+                } else {
+                    window.option.xAxis[0].data = kdatas.dates;
+                    window.option.xAxis[1].data = kdatas.dates;
+                    window.option.series[0].data =  setVolumeColor(kdatas.volumes,kdatas.data);
+                    window.option.series[1].data =  kdatas.data;
+                    window.option.series[2].data =  calculateMA(5, kdatas.data);
+                    window.option.series[3].data =  calculateMA(10, kdatas.data);
+                    window.option.series[4].data = calculateMA(20, kdatas.data);
+
+                    myChart.setOption(option);
+                }
+            }
+        }
+        kws.onclose = function() {
+            console.log('关闭');
+            kws = null;
+        }
+
+		// 调用K线数据接口
+        function getTrendData(){ 
+
+	        $.get("/Chart/getMarketOrdinaryJson?market="+ market +"&time="+ time + "&t="+(new Date().getTime()),function(res){
+
+	        	if(res.length) {
+
+                    $('.gui-loading').hide();
+
+                    var kdatas = formatData(res);
+                    if(sw) {
+                        sw = false;
+                        init(kdatas.data,kdatas.dates,kdatas.volumes);
+                    } else {
+                        window.option.xAxis[0].data = kdatas.dates;
+                        window.option.xAxis[1].data = kdatas.dates;
+                        window.option.series[0].data =  setVolumeColor(kdatas.volumes,kdatas.data);
+                        window.option.series[1].data =  kdatas.data;
+                        window.option.series[2].data =  calculateMA(5, kdatas.data);
+                        window.option.series[3].data =  calculateMA(10, kdatas.data);
+                        window.option.series[4].data = calculateMA(20, kdatas.data);
+
+                        myChart.setOption(option);
+
+                        if(ws_on) {
+                            kws.send('spot:kline:'+ market +':'+ time +'');
+                        }
+                    }
+
+                    // timer = setTimeout(function() {
+
+                    //     getTrendData(sw,time,market);
+
+                    // },1000 * 60 * 5);
+	        	}
+	        },'json');
+
+        }
+
+       // K线数据处理
+		function formatData (myDatas) {
+
+            var dates = []; // 时间
+            var data = [];
+            var volumes = [];
+
+			for(var i=0;i<myDatas.length;i++) {
+
+				dates.push(timeStamp2String(myDatas[i][0] * 1000));
+
+				data.push([myDatas[i][2],myDatas[i][5],myDatas[i][4],myDatas[i][3],myDatas[i][1]]);
+
+				volumes.push(myDatas[i][1]);
+			}
+            
+            return {
+                dates: dates,
+                data: data,
+                volumes: volumes
+            }
+		}
+        
+        // 时间格式化处理
+		function timeStamp2String(time){
+
+	        var datetime = new Date();
+	        datetime.setTime(time);
+	        var year = datetime.getFullYear();
+	        var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+	        var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+	        var hour = datetime.getHours()< 10 ? "0" + datetime.getHours() : datetime.getHours();
+	        var minute = datetime.getMinutes()< 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
+	        var second = datetime.getSeconds()< 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
+
+	        return year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
+	    }
+
+	    
+		function init(data,dates,volumes) {
+
+			var colorList = ['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'];
+			var labelFont = 'bold 12px Sans-serif';
+
+			var dataMA5 = calculateMA(5, data);
+			var dataMA10 = calculateMA(10, data);
+			var dataMA20 = calculateMA(20, data);
+
+			option = window.option = {
+			    animation: false,
+			    color: colorList,
+			    backgroundColor: '#fff',
+			    // title: {
+			    //     left: 'center',
+			    //     text: '移动端 K线图',
+			    //     textStyle: {
+			    //     	color: '#fff',
+			    //     	fontSize: 30
+			    //     },
+			    // },
+			    // legend: {
+			    //     top: 30,
+			    //     data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
+			    // },
+			    tooltip: {
+			    	axisPointer: {
+			            type: 'cross',
+			        },
+			        trigger: 'axis',
+			        formatter: function (params) {
+
+						var res = params[0].name ;
+						for (var i = 0; i < params.length; i++) {
+							if (params[i].value instanceof Array) {
+								// res += '<br/>' + params[i].seriesName + '<br/>';
+								res += '<br/>开盘 : ' + params[i].value[1] + '<br/>  最高 : ' + params[i].value[4] + '<br/>';
+								res += '收盘 : ' + params[i].value[2] + '<br/>  最低 : ' + params[i].value[3];
+
+							} else if(params[i].seriesName == 'Volume') {
+								res += '<br/>成交量 : ' + params[i].value;
+							} else {
+                                res += '<br/>' + params[i].seriesName;
+								res += ' : ' + params[i].value;
+                            }
+						}
+
+						return res;
+					},
+			        // triggerOn: 'none',
+			        transitionDuration: 0,
+			        confine: true,
+			        bordeRadius: 4,
+			        borderWidth: 1,
+			        borderColor: '#333',
+			        backgroundColor: 'rgba(255,255,255,0.5)',
+			       
+			        textStyle: {
+			            fontSize: 12,
+			            color: '#333',
+			        },
+                    
+			        // position: function (pos, params, el, elRect, size) {
+			        //     var obj = {
+			        //         top: 0
+			        //     };
+			        //     obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+			        //     return obj;
+			        // }
+			    },
+			    axisPointer: {
+			        link: [{
+			            xAxisIndex: [0,1]
+			        }]
+			    },
+			    dataZoom: [{
+			        type: 'slider',
+			        show: false,
+			        xAxisIndex: [0, 1],
+			        realtime: false,
+			        start: 100,
+			        end: 30,
+			        top: 65,
+			        height: 20,
+			        handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+			        handleSize: '120%'
+			    }, {
+			        type: 'inside',
+			        xAxisIndex: [0, 1],
+			        start: 40,
+			        end: 70,
+			        top: 30,
+			        height: 20
+			    }],
+			    xAxis: [{
+                    show: false,
+			        type: 'category',
+			        data: dates,
+			        boundaryGap : true,
+			        splitLine: {show: false},
+			        axisLine: { lineStyle: { color: '#777' }},
+			        axisLabel: {
+			            formatter: function (value) {
+			                return echarts.format.formatTime('hh:mm', value);
+			            }
+			        },
+			        min: 'dataMin',
+			        max: 'dataMax',
+			        axisPointer: {
+			            show: true,
+                        label: {
+                            show: false
+                        },
+                        lineStyle: {
+                            type: 'dashed'
+                        }
+			        }
+			    }, {
+			        type: 'category',
+			        gridIndex: 1,
+			        data: dates,
+			        scale: true,
+			        boundaryGap : true,
+			        splitLine: {show: false},
+			        axisLabel: {
+                        formatter: function (value) {
+			                return echarts.format.formatTime('hh:mm', value);
+			            }
+                    },
+			        axisTick: {show: false},
+			        axisLine: { lineStyle: { color: '#777' }},
+			        splitNumber: 20,
+			        min: 'dataMin',
+			        max: 'dataMax',
+                    axisPointer: {
+			            show: true,
+                        lineStyle: {
+                            type: 'dashed'
+                        }
+			        }
+			       
+			    }],
+			    yAxis: [{
+			        scale: true,
+			        // splitNumber: 2,
+			        axisLine: { lineStyle: { color: '#777' } },
+			        splitLine: { show: false },
+			        axisTick: { show: false },
+			        axisLabel: {
+                        // inside: true,
+                        align: 'right',
+                        margin: 1,
+                        showMinLabel: false,
+			            formatter: '{value}\n'
+			        }
+			    }, {
+			        scale: true,
+			        gridIndex: 1,
+			        splitNumber: 2,
+			        axisLabel: {
+                        // inside: true,
+                        align: 'right',
+                        margin: 1,
+                        showMaxLabel: false,
+			            formatter: '{value}'
+                    },
+			        axisLine: {lineStyle: { color: '#777' }},
+			        axisTick: {show: false},
+			        splitLine: {show: false},
+
+			    }],
+			    grid: [{
+			        left: 50,
+			        right: 10,
+			        top: 50,
+			        height: '75%'
+			    }, {
+			        left: 50,
+			        right: 10,
+			        top: '75%',
+			        height: '20%'
+			    }],
+			    graphic: [{
+			        type: 'group',
+			        left: 'center',
+			        top: 70,
+			        width: 300,
+			        bounding: 'raw',
+			        children: [{
+			            id: 'MA5',
+			            type: 'text',
+			            style: {fill: colorList[1], font: labelFont},
+			            left: 0
+			        }, {
+			            id: 'MA10',
+			            type: 'text',
+			            style: {fill: colorList[2], font: labelFont},
+			            left: 'center'
+			        }, {
+			            id: 'MA20',
+			            type: 'text',
+			            style: {fill: colorList[3], font: labelFont},
+			            right: 0
+			        }]
+			    }],
+			    series: [{
+			        name: 'Volume',
+			        type: 'bar',
+			        xAxisIndex: 1,
+			        yAxisIndex: 1,
+			        itemStyle: {
+			            normal: {
+			                color: '#7fbe9e',
+			            },
+			            // emphasis: {
+			            //     color: '#140'
+			            // }
+			        },
+			        data: setVolumeColor(volumes,data)
+			    }, {
+			        type: 'candlestick',
+			        name: '日K',
+			        data: data,
+			        itemStyle: {
+			            normal: {
+			                color: upcolor,
+			                color0: downcolor,
+			                borderColor: upcolor,
+			                borderColor0: downcolor
+			            },
+			            // emphasis: {
+			            //     color: 'black',
+			            //     color0: '#444',
+			            //     borderColor: 'black',
+			            //     borderColor0: '#444'
+			            // }
+			        }
+			    }, {
+			        name: 'MA5',
+			        type: 'line',
+			        data: dataMA5,
+			        smooth: true,
+			        showSymbol: false,
+			        lineStyle: {
+			            normal: {
+			                width: 1
+			            }
+			        }
+			    }, {
+			        name: 'MA10',
+			        type: 'line',
+			        data: dataMA10,
+			        smooth: true,
+			        showSymbol: false,
+			        lineStyle: {
+			            normal: {
+			                width: 1
+			            }
+			        }
+			    }, {
+			        name: 'MA20',
+			        type: 'line',
+			        data: dataMA20,
+			        smooth: true,
+			        showSymbol: false,
+			        lineStyle: {
+			            normal: {
+			                width: 1
+			            }
+			        }
+			    }]
+			};
+
+			// 基于准备好的dom，初始化echarts实例
+        	myChart = echarts.init(document.getElementById('main'));
+
+
+        	// 使用刚指定的配置项和数据显示图表。
+        	myChart.setOption(option);
+		}
+
+		// 均线数据处理
+		function calculateMA(dayCount, data) {
+		    var result = [];
+		    for (var i = 0, len = data.length; i < len; i++) {
+		        if (i < dayCount) {
+		            result.push('-');
+		            continue;
+		        }
+		        var sum = 0;
+		        for (var j = 0; j < dayCount; j++) {
+		            sum += data[i - j][2];
+		        }
+		        result.push((sum / dayCount).toFixed(5));
+		    }
+		    return result;
+		}
+
+		
+		// 交易量柱状图的颜色
+		function setVolumeColor (volumes,data) {
+			
+			var newVolumes = new Array();
+			var obj;
+			var colors = getVolumeBarColor(data);
+
+			for(var i= 0; i< volumes.length;i++) {
+				obj = {
+					value: volumes[i],
+					itemStyle: {
+						color: colors[i]
+					}
+				}
+
+				newVolumes.push(obj)
+			}
+
+			return newVolumes;
+		}
+
+
+		function getVolumeBarColor(data) {
+
+        	var colorArr = [];
+
+        	for(var i=0;i < data.length;i++) {
+
+        		if(data[i][0] - data[i][1] > 0) {
+
+        			colorArr.push('#d4f1eb'); // downcolor
+
+        		} else {
+
+        			colorArr.push('#efd8d8'); // upcolor
+        		}
+        	}
+        	return colorArr;
+		}
+
+        // 选择不同时间段按钮K线
+        $('.time-container').on('click','li',function() {
+            if(!$(this).hasClass('active')) {
+                $(this).addClass('active').siblings().removeClass('active');
+                time = $(this).data('time');
+                
+                // clearTimeout(timer);
+                // timer = null;
+
+                getTrendData();
+                
+
+            }
+            
+        })
+        
+        
+
+
+        
+        
+    </script>
+</body>
+</html>

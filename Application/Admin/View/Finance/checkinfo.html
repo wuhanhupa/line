@@ -1,0 +1,116 @@
+<include file="Public:header"/>
+<div id="main-content">
+    <div id="top-alert" class="fixed alert alert-error" style="display: none;">
+        <button class="close fixed" style="margin-top: 4px;">&times;</button>
+        <div class="alert-content">警告内容</div>
+    </div>
+    <div id="main" class="main">
+        <div class="main-title-h">
+            <span class="h1-title">提现审核详情</span>
+        </div>
+
+        <div class="tab-wrap">
+            <div class="tab-content">
+                <form id="form" class="form-horizontal">
+                    <div id="tab" class="tab-pane in tab">
+                        <div class="form-item cf">
+                            <table>
+                                <tr class="controls">
+                                    <td class="item-label">用户名 :</td>
+                                    <td width="400px;"><input type="text" class="form-control" value="{$user.username}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">用户手机 :</td>
+                                    <td><input type="text" class="form-control" value="{$user.moble}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">真实姓名 :</td>
+                                    <td><input type="text" class="form-control" value="{$user.truename}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">身份证号码 :</td>
+                                    <td><input type="text" class="form-control" value="{$user.idcard}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">提现币种 :</td>
+                                    <td><input type="text" class="form-control" value="{$mytx.coinname}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">可用资产 :</td>
+                                    <td><input type="text" class="form-control" value="{$coin['ky']}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">冻结资产 :</td>
+                                    <td><input type="text" class="form-control" value="{$coin['dj']}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">提现数额 :</td>
+                                    <td><input type="text" class="form-control" value="{$mytx.num}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">提现地址 :</td>
+                                    <td><input type="text" class="form-control" value="{$mytx.address}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                                <tr class="controls">
+                                    <td class="item-label">申请时间 :</td>
+                                    <td><input type="text" class="form-control" value="{$mytx.addtime|addtime}"></td>
+                                    <td class="item-note"></td>
+                                </tr>
+                
+                                <tr class="controls">
+                                    <td class="item-label"></td>
+                                    <td>
+                                        <div class="form-item cf">
+                                            <button class="btn submit-btn ajax-post" onclick="shehe({$mytx['id']}, 1)"
+                                                    target-form="form-horizontal">通 过
+                                            </button>
+                                             <button class="btn btn-return ajax-post" onclick="shehe({$mytx['id']}, 2)"
+                                                    target-form="form-horizontal">驳 回
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function shehe(id,status){
+        $.ajax({
+            type:'post',
+            url:"{:U('Admin/Finance/checktx')}",
+            data:{
+                id:id,
+                status:status
+            },
+            success:function(ret){
+                layer.msg(ret.info);
+                if(ret.status==1000) {
+                    window.location.href="{:U('Admin/Finance/checkturn')}";
+                }
+            }
+        })
+    }
+</script>
+<script type="text/javascript">
+    $(function () {
+        //主导航高亮
+        $('.user-box').addClass('current');
+        //边导航高亮
+        $('.user-index').addClass('current');
+    });
+</script>
+<include file="Public:footer"/>

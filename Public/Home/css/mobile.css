@@ -1,0 +1,196 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/*图片上传*/
+
+html,body {
+    width: 100%;
+    height: 100%;
+}
+body {
+    font-family: "Microsoft Yahei";
+    background-color: #1d1f2c;
+}
+ul,li {
+    list-style: none;
+}
+i {
+    font-style: normal;
+}
+a {
+    color: #666;
+    text-decoration: none;
+}
+.gui-loading {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    text-align: center;
+    font-size: 0.3rem;
+    color: #999;
+    transform: translate(-50%,-50%);
+
+}
+.gui-loading img {
+    width: 1.2rem;
+    margin-bottom: 0.2rem;
+}
+.gui-com-header {
+    position: relative;
+}
+.gui-com-header h4{
+    text-align: center;
+    font-size: 0.48rem;
+    line-height: 1.32rem;
+    height: 1.32rem;
+    background-color: #161620;
+    color: #fff;
+    font-weight: normal;
+}
+.gui-com-header .back-btn {
+    position: absolute;
+    left: 0.8rem;
+    padding-left: 0.1rem;
+    color: #fff;
+    font-size: 0.48rem;
+    height: 1.32rem;
+    line-height: 1.32rem;
+}
+.gui-com-header .back-btn:after {
+    content: "";
+    display: block;
+    width: 0.3rem;
+    height: 0.3rem;
+    border-left: 1px solid #fff;
+    border-top: 1px solid #fff;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: rotate(-45deg) translateY(-80%);
+}
+.gui-container .gui-tabs{
+    display: flex;
+    justify-content: center;
+    background-color: #161620;
+}
+.gui-container .gui-tabs li {
+    position: relative;
+    float: left;
+    color: #fff;
+    font-size: 0.48rem;
+    width: 33.3%;
+    text-align: center;
+    line-height: 1.32rem;
+}
+.gui-container .gui-tabs li.active:after {
+    content: '';
+    display: block;
+    width: 0.8rem;
+    border-bottom: 2px solid #ffc730;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    margin-left: -0.4rem;
+}
+.gui-content-list {
+    padding: 0.4rem 0.6rem;
+    position: relative;
+}
+.gui-content-list .gui-list-item a {
+    display: block;
+    font-size: 0.48rem;
+    height: 1.66rem;
+    line-height: 1.66rem;
+    color: #fff;
+    position: relative;
+}
+.gui-content-list .gui-list-item a:after {
+    content: "";
+    display: block;
+    width: 0.3rem;
+    height: 0.3rem;
+    border-left: 1px solid #fff;
+    border-top: 1px solid #fff;
+    transform: rotate(135deg);
+    position: absolute;
+    right: 0;
+    top:50%;
+    margin-top: -0.14rem;
+}
+.gui-content-list .gui-list-item a p {
+    width: 90%;
+    height: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.gui-content-header {
+    text-align: center;
+    padding: 0.6rem 0.6rem 0;
+}
+.gui-content-header h4{
+    font-size: 0.48rem;
+    color: #fff;
+    font-weight: normal;
+    line-height: 2;
+}
+.gui-content-header p{
+    font-size: 0.38rem;
+    color: #7678a3;
+    line-height: 1.6;
+}
+.gui-content-text {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.38rem !important;
+    color: #7678a3 !important;
+    line-height: 1.8;
+}
+.gui-content-text img {
+    max-width: 100%;
+}
+/**
+ *  下载页面
+ */
+.downloadpage{
+    width: 100%;
+    color: #cecece;
+    padding:  25px 40px;
+    text-align: center;
+}
+.img-response{
+    max-width: 100%;
+}
+.download-button{
+    display: block;
+    width: 187px;
+    height: 36px;
+    background-color: transparent;
+    border:none;
+    background-size: 100%;
+    margin: 0 auto;
+    margin-top: 10px;
+    outline: none;
+}
+.ios-button{
+    background-image: url(../images/papi/ios_button.png);
+}
+.android-button{
+    background-image: url(../images/papi/android_button.png);
+}
+.download-tips{
+    margin: 40px auto 0;
+    max-width: 375px;
+}
+.download-tips h2{
+    text-align: center;
+}
+.download-tips p{
+    line-height: 25px;
+    text-align: left;
+}
+.download-ft{
+    margin-top: 40px;
+    text-align: center;
+}

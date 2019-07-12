@@ -1,0 +1,763 @@
+<include file="Contract:header"/>
+<div id="app" style="height:100%;margin-top: 50px;">
+    <app-component></app-component>
+</div>
+<script id="app-template" type="text/x-template">
+    <div class="gui-trade-container">
+        <div class="left gui-trade-left">
+            <div class="base-coin-tabs">
+                <span class="active" id="USDT">USDT</span>
+            </div>
+            <div class="coins-list-box">
+                <div class="coins-list-header gui-coins-title">
+                    <span>币种</span>
+                    <span>日涨跌</span>
+                    <span>价格(USDT)</span>
+                </div>
+                <ul class="g-scrollbar list-content">
+                    <li>
+                        <a href="javascript:;">
+                            <span style="background-image:url(/Upload/coin/bitcoin.png);">
+                                <b>比特币(BTC/USDT)</b>
+                            </span>
+                        </a>
+                        <span class=" color-green">-5.68%</span>
+                        <span class=" color-green">4364.92</span>
+                    </li>
+                    <li><a href="javascript:;">
+                        <span style="background-image:url(/Upload/coin/ethereum.png)">
+                            <b>以太坊(ETH/USDT)</b>
+                        </span></a>
+                        <span class=" color-green">-7.24%</span>
+                        <span class=" color-green">126.86</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="right gui-trade-right">
+            <div class="gui-trade-top">
+                <div class="gui-data-box left">
+                    <div class="kline-box">
+                        <div class="market-title">
+                            <span style="background-image:url(/Upload/coin/bitcoin.png);">BTC</span>
+                            <span>$4364.92</span>
+                            <span>-5.68%</span>
+                        </div>
+                        <div class="kline-content">
+                            <iframe style="border-style: none;" border="0" width="100%" height="400" id="market_chart"
+                                    src="/Contract/chart2?btc_usdt"></iframe>
+                        </div>
+                    </div>
+                    <div class="gui-form-box">
+                        <div class="input-form buy-form left">
+                            <h4>限价</h4>
+                            <ul>
+                                <li>
+                                    可用余额：0.0000 <span>USDT</span>
+                                    <a href="javascript:;" class="transfer-button">资金划转</a>
+                                </li>
+                                <li>
+                                    <span>仓位:</span>
+                                    <input type="text" placeholder="0.00">
+                                    <i>BTC</i>
+                                </li>
+                                <li>
+                                    <span>限价:</span>
+                                    <input type="text" placeholder="0.00000">
+                                    <i>USDT</i>
+                                </li>
+                                <li>
+                                    <p>委托价值：0.0000 <span>BTC</span></p>
+                                </li>
+                            </ul>
+                            <div class="buy-button sub-button">买入(做多)</div>
+                            <div class="Multiple-box">
+                                <span class="active"><i>2倍</i></span>
+                                <span><i>3倍</i></span>
+                                <span><i>5倍</i></span>
+                                <span><i>10倍</i></span>
+                                <span><i>25倍</i></span>
+                                <span><i>40倍</i></span>
+
+                            </div>
+                        </div>
+                        <div class="input-form sell-form left">
+                            <h4>限价</h4>
+                            <ul>
+                                <li>
+                                    可用余额：0.0000 <span>USDT</span>
+                                    <a href="javascript:;" class="transfer-button sell-transfer">资金划转</a>
+                                </li>
+                                <li>
+                                    <span>仓位:</span>
+                                    <input type="text" placeholder="0.00">
+                                    <i>BTC</i>
+                                </li>
+                                <li>
+                                    <span>限价:</span>
+                                    <input type="text" placeholder="0.00000">
+                                    <i>USDT</i>
+                                </li>
+                                <li>
+                                    <p>委托价值：0.0000 <span>BTC</span></p>
+                                </li>
+                            </ul>
+                            <div class="sell-button sub-button">卖出(做空)</div>
+                            <div class="Multiple-box">
+                                <span class="active"><i>2倍</i></span>
+                                <span><i>3倍</i></span>
+                                <span><i>5倍</i></span>
+                                <span><i>10倍</i></span>
+                                <span><i>25倍</i></span>
+                                <span><i>40倍</i></span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gui-data-table right">
+                    <div class="table-box  g-scrollbar">
+                        <h4>委托列表</h4>
+                        <table class="Entrust-list">
+                            <thead>
+                            <tr>
+                                <th width="15%">买/卖</th>
+                                <th width="30%">价格(USDT)</th>
+                                <th width="25%">数量(BTC)</th>
+                                <th width="30%">总计(USDT)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item,index) in selllistData" v-if="index < 5">
+                                <td width="15%" class="sell">卖 {{ index + 1 }}</td>
+                                <td width="30%" class="sell">{{ item[0] }}</td>
+                                <td width="25%" class="sell">{{ item[1] }}</td>
+                                <td width="30%" class="sell">{{ (item[0] * item[1]).toFixed(6) * 1 }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <hr>
+                        <table class="Entrust-list">
+
+                            <tr v-for="(item,index) in buylistData" v-if="index < 5">
+                                <td width="15%" class="buy">买 {{ index + 1 }}</td>
+                                <td width="30%" class="buy">{{ item[0] }}</td>
+                                <td width="25%" class="buy">{{ item[1] }}</td>
+                                <td width="30%" class="buy">{{ (item[0] * item[1]).toFixed(6) * 1 }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="table-box g-scrollbar">
+                        <h4>最近成交</h4>
+                        <table class="trade-log" id="orderlist">
+                            <tr>
+                                <td width="30%">时间</td>
+                                <td width="10%">买/卖</td>
+                                <td width="20%">成交价</td>
+                                <td width="20%">成交量</td>
+                                <td width="20%">总额</td>
+                            </tr>
+                            <tr v-for="(item,index) in tradeLogData" v-if="index < 8">
+                                <td width="30%" :class="item.type > 1 ? 'sell' : 'buy'">{{ item.addtime }}</td>
+                                <td width="10%" :class="item.type > 1 ? 'sell' : 'buy'">{{ item.type > 1 ? '卖' : '买'
+                                    }}
+                                </td>
+                                <td width="20%" :class="item.type > 1 ? 'sell' : 'buy'">{{ item.price }}</td>
+                                <td width="20%" :class="item.type > 1 ? 'sell' : 'buy'">{{ item.num }}</td>
+                                <td width="20%" :class="item.type > 1 ? 'sell' : 'buy'">{{ item.mum }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="gui-trade-footer clearfix">
+                <div class="gui-record-tabs">
+                    <span class="active">仓位</span>
+                    <span>已平仓仓位</span>
+                    <span>活动委托</span>
+                    <span>已成交</span>
+                    <span>委托历史</span>
+                </div>
+                <div class="gui-record-table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th width="7%">合约</th>
+                            <th width="7%">目前仓位数量</th>
+                            <th width="10%">价值</th>
+                            <th width="5%">开仓价格</th>
+                            <th width="5%">标记价格</th>
+                            <th width="5%">强平价格</th>
+                            <th width="16%">保证金</th>
+                            <th width="15%">未实现盈亏(回报率%)</th>
+                            <th width="10%">已实现盈亏</th>
+                            <th width="20%">平仓</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td width="7%">BTC/USDT</td>
+                            <td width="7%">100</td>
+                            <td width="10%">0.0124BTC</td>
+                            <td width="5%">6243,39</td>
+                            <td width="5%">4321.90</td>
+                            <td width="5%">51113,35</td>
+                            <td width="16%"><span class="moneny-button">$</span>1000.0USDT(5x)</td>
+                            <td width="15%">0.0000USDT(0.01%)</td>
+                            <td width="10%">0.0000USDT</td>
+                            <td width="20%"><input type="text" value="6298.32"><span class="">平仓</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</script>
+<script>
+    Vue.component('app-component', {
+        template: '#app-template',
+        data: function () {
+            return {
+                USERID: {$Think.session.userId},
+                selllistData:'',
+                buylistData:'',
+                tradeLogData:'',
+            }
+        },
+        created: function () {
+            var vm = this;
+
+            // $.ajax({ // 获取汇率
+            //     url: 'http://139.224.64.194:9002/Mapi/Bcb/globalTrade',
+            //     dataType: 'json',
+            //     type: 'GET',
+            //     success: function (res) {
+
+            //     },
+            //     error: function (msg) {
+            //         console.log(msg);
+            //     }
+            // })
+        },
+        watch: {},
+        methods: {
+            recodeTabs: function () {
+
+
+            },
+            // 资金划转
+            capitalTransfer: function () {
+
+                layer.open({
+                    type: 1,
+                    area: '575px',
+                    title: false,
+                    closeBtn: 2,
+                    shadeClose: false,
+                    skin: 'gui-mask-class',
+                    content: '<div class="gui-mask-contanier">' +
+                    '<h4 class="gui-mask-title">资金划转</h4>' +
+                    '<div class="form-box">' +
+                    '<ul>' +
+                    '<li>' +
+                    '<span class="gui-input-title">币种</span>' +
+                    '<select name="select-symbol-box" id="select-symbol-box">' +
+                    '<option value="BTC">BTC</option>' +
+                    '</select>' +
+                    '</li>' +
+                    '<li class="transfer-guide">' +
+                    '<span class="gui-input-title">资金划转方向</span>' +
+                    '<p><span>币币账户</span><b>转至</b><span>合约账户</span></p>' +
+                    '</li>' +
+                    '<li>' +
+                    '<span class="gui-input-title">划转数量</span>' +
+                    '<div>' +
+                    '<input type="text" value="" placeholder="输入金额" />' +
+                    '<p>可转数量' + '0.00001' + '<i class="getAll">全部划转</i></p>' +
+                    '</div>' +
+                    '</li>' +
+                    '</ul>' +
+                    '<button type="button" class="sub-btn ui-button ui-button-block" onclick="submitCapitalData(this)">确定</button>' +
+                    '</div>' +
+                    '</div>'
+                });
+            }
+        },
+        mounted: function () {
+            var vm = this;
+            var market = "{$market}";
+
+            var num_round = "{$num_round}"; // 数量小数点位数
+            var price_round = "{$price_round}"; // 价格小数点位数
+
+            var userid = "{$Think.session.userId}";
+            var trade_moshi = 1;
+            var getDepth_tlme = null;
+            var trans_lock = 0;
+            var coinsData = null;
+            var coins_symbol =
+                'ETH,EOS,GSE,SKM,ONT,BTC,NKN,AE,LYM,BTM,GTC,THETA,QTUM,RATING,IHT,TSL,ETC,TRX,ZIL,OCN,ADA,NAS,LRC,RUFF,BCH,XRP,BOT,BTS,HSR,IOTX,DDD,VEN,DOGE,GXS,TIO,JNT,BCD,EOSDAC,MDT,XMR,LRN,NEO,DOCK,SENC,SMT,MAN,MED,ABT';
+            var buy_price_focus = false;
+            var sell_price_focus = false;
+
+
+            // 判断买入价格 、卖出价格是否获取过焦点
+            $('#buy_price').focus(function () {
+                buy_price_focus = true;
+            })
+
+            $('#sell_price').focus(function () {
+                sell_price_focus = true;
+            })
+
+            // 仓位记录导航栏
+            // $('.gui-record-tabs').on('click','span',function() {
+            //     if(!$(this).hasClass('active')) {
+            //         $(this).addClass('active').siblings().removeClass('active');
+            //     }
+            // })
+
+            // 资金划转
+            $('.transfer-button').on('click', function () {
+                vm.capitalTransfer();
+            })
+
+            // 合约倍率
+            $('.Multiple-box').on('click', 'span', function () {
+                if (!$(this).hasClass('active')) {
+                    $(this).addClass('active').siblings('span').removeClass('active');
+                } else {
+                    $(this).removeClass('active');
+                }
+            })
+
+            // 添加货币列表当前价格区块
+
+            $('body').on('click', '.base-coin-tabs span', function () {
+                var tab_id = $(this).attr('id');
+                if (!$(this).hasClass('active')) {
+                    $(this).addClass('active').siblings().removeClass('active');
+                }
+            })
+
+            var getCoinsData = function () {
+
+                $.ajax({
+                    url: '/Ajax/allcoin?t=' + Math.random(),
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        var html = '';
+                        var color = '';
+                        var coin_icon = '';
+
+                        for (var item in data) {
+                            color = data[item][7] > 0 ? 'color-red' : 'color-green';
+                            coin_icon = data[item][9];
+                            html += '<li>' +
+                                '<a href="' + (data[item][1] ? '/trade/index/market/' +
+                                    data[item][8] + '/' : 'javascript:;') +
+                                '"><span style="background-image:url(/Upload/coin/' +
+                                coin_icon + ')"><b>' + data[item][0] + '</b>' + '</span>' +
+                                '</a>' +
+                                '<span></span>' +
+                                '<span class=" ' + color + '">' + (data[item][7]).toFixed(2) +
+                                '%' + '</span>' +
+                                '<span class=" ' + color + '">' + data[item][1] + '</span>' +
+                                '</li>'
+                        }
+
+                        $('.coins-list-box ul').html(html);
+                    },
+                    error: function (msg) {
+                        console.log(msg);
+                    }
+                })
+                t = setTimeout(getCoinsData, 5000);
+            }
+            // getCoinsData();
+
+            // 获取成交记录
+            function getTradelog() {
+                market = 'btc_usdt';
+                $.getJSON("/Ajax/getTradelog?market=" + market + "&t=" + Math.random(), function (data) {
+                    // var data = {"tradelog":[{"addtime":"11-23 15:47:54","type":"1","price":4383.59,"num":0.0171,"mum":74.96},{"addtime":"11-23 15:47:54","type":"2","price":4388.45,"num":0.0189,"mum":82.94},{"addtime":"11-23 15:47:23","type":"2","price":4375.98,"num":0.0183,"mum":80.08},{"addtime":"11-23 15:47:23","type":"1","price":4373.96,"num":0.0164,"mum":71.73},{"addtime":"11-23 15:46:52","type":"2","price":4379.01,"num":0.0144,"mum":63.06},{"addtime":"11-23 15:46:52","type":"1","price":4377.58,"num":0.0163,"mum":71.35},{"addtime":"11-23 15:46:21","type":"2","price":4379.9,"num":0.014,"mum":61.32},{"addtime":"11-23 15:46:21","type":"1","price":4379.47,"num":0.0186,"mum":81.46},{"addtime":"11-23 15:45:50","type":"1","price":4382.95,"num":0.0169,"mum":74.07},{"addtime":"11-23 15:45:50","type":"2","price":4386.03,"num":0.0183,"mum":80.26},{"addtime":"11-23 15:45:19","type":"2","price":4387.09,"num":0.0149,"mum":65.37},{"addtime":"11-23 15:45:19","type":"1","price":4383.51,"num":0.0187,"mum":81.97},{"addtime":"11-23 15:44:48","type":"1","price":4379.12,"num":0.0198,"mum":86.71},{"addtime":"11-23 15:44:48","type":"2","price":4384.5,"num":0.0156,"mum":68.4},{"addtime":"11-23 15:44:17","type":"1","price":4390.14,"num":0.0107,"mum":46.97},{"addtime":"11-23 15:44:17","type":"2","price":4390.74,"num":0.0184,"mum":80.79},{"addtime":"11-23 15:43:45","type":"1","price":4388.11,"num":0.0156,"mum":68.45},{"addtime":"11-23 15:43:45","type":"2","price":4389.28,"num":0.0127,"mum":55.74},{"addtime":"11-23 15:43:14","type":"2","price":4384.67,"num":0.0164,"mum":71.91},{"addtime":"11-23 15:43:14","type":"1","price":4381.25,"num":0.0158,"mum":69.22},{"addtime":"11-23 15:42:43","type":"2","price":4392.79,"num":0.0142,"mum":62.38},{"addtime":"11-23 15:42:43","type":"1","price":4388.51,"num":0.0119,"mum":52.22},{"addtime":"11-23 15:42:12","type":"2","price":4394.42,"num":0.0182,"mum":79.98},{"addtime":"11-23 15:42:12","type":"1","price":4393.9,"num":0.012,"mum":52.73},{"addtime":"11-23 15:41:41","type":"1","price":4393.1,"num":0.0149,"mum":65.46},{"addtime":"11-23 15:41:41","type":"2","price":4394.63,"num":0.0192,"mum":84.38},{"addtime":"11-23 15:41:10","type":"2","price":4392.79,"num":0.0181,"mum":79.51},{"addtime":"11-23 15:41:10","type":"1","price":4386.55,"num":0.014,"mum":61.41},{"addtime":"11-23 15:40:39","type":"1","price":4385.96,"num":0.0135,"mum":59.21},{"addtime":"11-23 15:40:39","type":"2","price":4390.23,"num":0.0147,"mum":64.54},{"addtime":"11-23 15:40:08","type":"1","price":4395.07,"num":0.0187,"mum":82.19},{"addtime":"11-23 15:40:08","type":"2","price":4396.12,"num":0.0133,"mum":58.47},{"addtime":"11-23 15:39:37","type":"2","price":4393.83,"num":0.0159,"mum":69.86},{"addtime":"11-23 15:39:37","type":"1","price":4391.51,"num":0.0148,"mum":64.99},{"addtime":"11-23 15:39:06","type":"1","price":4381.82,"num":0.0163,"mum":71.42},{"addtime":"11-23 15:39:06","type":"2","price":4382.18,"num":0.014,"mum":61.35},{"addtime":"11-23 15:38:35","type":"2","price":4385.38,"num":0.0173,"mum":75.87},{"addtime":"11-23 15:38:35","type":"1","price":4383.01,"num":0.0121,"mum":53.03},{"addtime":"11-23 15:38:04","type":"2","price":4389.99,"num":0.0103,"mum":45.22},{"addtime":"11-23 15:38:04","type":"1","price":4389.99,"num":0.0112,"mum":49.17},{"addtime":"11-23 15:37:33","type":"2","price":4388.22,"num":0.0163,"mum":71.53},{"addtime":"11-23 15:37:33","type":"1","price":4383.79,"num":0.0112,"mum":49.1},{"addtime":"11-23 15:37:02","type":"2","price":4381.09,"num":0.0106,"mum":46.44},{"addtime":"11-23 15:37:02","type":"1","price":4379.72,"num":0.0162,"mum":70.95},{"addtime":"11-23 15:36:31","type":"2","price":4383.93,"num":0.0117,"mum":51.29},{"addtime":"11-23 15:36:31","type":"1","price":4379,"num":0.0146,"mum":63.93},{"addtime":"11-23 15:36:00","type":"1","price":4380.4,"num":0.019,"mum":83.23},{"addtime":"11-23 15:36:00","type":"2","price":4380.68,"num":0.0187,"mum":81.92},{"addtime":"11-23 15:35:29","type":"2","price":4382.18,"num":0.0189,"mum":82.82},{"addtime":"11-23 15:35:29","type":"1","price":4380.72,"num":0.0149,"mum":65.27}]};
+                    if (data && data['tradelog']) {
+
+                        vm.tradeLogData = data['tradelog'];
+                    }
+                });
+                // setTimeout('getTradelog()', 5000);
+            }
+
+            // 获取深度数据
+            function getDepth() {
+                var data = {
+                    "depth": {
+                        "buy": [[4369.12, 0.0338], [4367.29, 0.0023], [4366.92, 0.0015], [4366.85, 0.0513], [4363.99, 2], [4363.83, 0.028], [4363.67, 0.3137], [4354.82, 2.2667], [4351.24, 1.2552], [4351.23, 4.2473]],
+                        "sell": [[4403.74, 0.051], [4403.71, 0.193], [4403.7, 6.526], [4388.76, 0.0288], [4388.33, 0.0075], [4385.69, 0.0019], [4383.57, 0.3984], [4382.05, 0.6567], [4381.06, 0.0479], [4381.02, 0.0003]]
+                    }
+                };
+                if (data['depth']) {
+                    vm.selllistData = data['depth']['sell'];
+                    vm.buylistData = data['depth']['buy'];
+                }
+            }
+
+            function getEntrustAndUsercoin() {
+                $.getJSON("/Ajax/getEntrustAndUsercoin?market=" + market + "&t=" + Math.random(), function (data) {
+                    if (data) {
+                        if (data['entrust']) {
+                            $('#entrust_over').show();
+                            var list = '';
+                            var cont = data['entrust'].length;
+                            for (i = 0; i < data['entrust'].length; i++) {
+                                if (data['entrust'][i]['type'] == 1) {
+                                    list +=
+                                        '<tr title="以这个价格卖出" onclick="autotrust(this,\'buy\',2)"><td class="buy" width="20%">' +
+                                        data['entrust'][i]['addtime'] +
+                                        '</td><td class="buy" width="10%">买</td><td class="buy" width="15%">' +
+                                        data['entrust'][i]['price'] +
+                                        '</td><td class="buy" width="15%">' + data['entrust'][i][
+                                            'num'
+                                            ] + '</td><td class="buy" width="10%">' + data['entrust'][i]
+                                            ['deal'] + '</td><td class="buy" width="10%">' + (data[
+                                            'entrust'][i]['price'] * data['entrust'][i]['num']).toFixed(
+                                        6) +
+                                        '</td><td><a style="color: #2674FF;" class="cancelaa" id="' +
+                                        data['entrust'][i]['id'] + '" onclick="cancelaa(\'' + data[
+                                            'entrust'][i]['id'] +
+                                        '\')" href="javascript:void(0);">撤销</a></td></tr>';
+                                } else {
+
+
+                                    list +=
+                                        '<tr title="以这个价格买入" onclick="autotrust(this,\'sell\',2)"><td class="sell" width="20%">' +
+                                        data['entrust'][i]['addtime'] +
+                                        '</td><td class="sell" width="10%">卖</td><td class="sell" width="15%">' +
+                                        data['entrust'][i]['price'] +
+                                        '</td><td class="sell" width="15%">' + data['entrust'][i][
+                                            'num'
+                                            ] + '</td><td class="sell" width="10%">' + data['entrust'][
+                                            i
+                                            ]['deal'] + '</td><td class="sell" width="10%">' + (data[
+                                            'entrust'][i]['price'] * data['entrust'][i]['num']).toFixed(
+                                        6) +
+                                        '</td><td><a style="color: #2674FF;" class="cancelaa" id="' +
+                                        data['entrust'][i]['id'] + '" onclick="cancelaa(\'' + data[
+                                            'entrust'][i]['id'] +
+                                        '\')" href="javascript:void(0);">撤销</a></td></tr>';
+                                }
+                            }
+                            if (cont == 10) {
+                                list +=
+                                    '<tr><td style="text_align:center;" colspan="7"><a href="/Finance/mywt" style="color: #2674FF;">更多委托信息</a>&nbsp;&nbsp;</td></tr>';
+                            }
+                            $('#entrustlist').html(list);
+                        } else {
+                            $('#entrust_over').hide();
+                        }
+                        if (data['usercoin']) {
+                            if (data['usercoin']['cny']) {
+                                $("#my_rmb").html(data['usercoin']['cny']);
+                            } else {
+                                $("#my_rmb").html('0.00');
+                            }
+
+                            if (data['usercoin']['cnyd']) {
+                                $("#my_rmbd").html(data['usercoin']['cnyd']);
+                            } else {
+                                $("#my_rmbd").html('0.00');
+                            }
+
+                            if (data['usercoin']['xnb']) {
+                                $("#my_xnb").html(data['usercoin']['xnb']);
+                            } else {
+                                $("#my_xnb").html('0.00');
+                            }
+
+                            if (data['usercoin']['xnbd']) {
+                                $("#my_xnbd").html(data['usercoin']['xnbd']);
+                            } else {
+                                $("#my_xnbd").html('0.00');
+                            }
+                        }
+
+                    }
+                });
+
+
+                $.getJSON("/Ajax/allfinance?t=" + Math.random(), function (data) {
+
+                    $('#user_finance').html('¥ ' + data);
+                });
+
+                // setTimeout('getEntrustAndUsercoin()', 5000);
+            }
+
+
+            $(function () {
+
+                getTradelog();
+                getDepth();
+
+                if (userid > 0) {
+                    // getEntrustAndUsercoin();
+                } else {
+                    $('#entrust_over').hide();
+                }
+
+
+            });
+
+
+            function toNum(num, round) {
+                return Math.round(num * Math.pow(10, round) - 1) / Math.pow(10, round);
+            }
+
+            function sliceString(value, num) { //根据币种限制输入框限时小数点位数
+
+                var str = value.toString();
+                console.log(str.split(".")[1])
+                var len = str.split(".")[1].length - num;
+
+                return str.slice(0, str.length - len);
+            };
+
+
+            // 自动填价格
+            function autotrust(_this, type, cq) {
+
+                if (type == 'sell') {
+                    $('#buy_price').val(parseFloat($(_this).children().eq(cq).html()).toFixed(price_round) *
+                        1).css({
+                        'font_size': '14px'
+                    });
+                    if ($("#my_rmb").html() > 0) {
+                        $("#buy_max").html(sliceString(($("#my_rmb").html() / $('#buy_price').val()),
+                            num_round));
+                    }
+                    if ($('#buy_num').val()) {
+                        $("#buy_mum").val(($('#buy_num').val() * $('#buy_price').val()).toFixed(8) * 1);
+                    }
+
+                }
+                if (type == 'buy') {
+                    $('#sell_price').val(parseFloat($(_this).children().eq(cq).html()).toFixed(price_round) *
+                        1).css({
+                        'fontSize': '14px'
+                    });
+                    if ($("#my_xnb").html() > 0) {
+                        $("#sell_max").html($("#my_xnb").html());
+                    }
+                    if ($('#sell_num').val()) {
+                        $("#sell_mum").val(($('#sell_num').val() * $('#sell_price').val()).toFixed(8) * 1);
+                    }
+                }
+
+            }
+
+            function setMaiChu() {
+                $('#sell_price').val($.trim($('#sell_best_price').html().replace('$', '')));
+                var buyprice = parseFloat($('#buy_price').val());
+                var buynum = parseFloat($('#buy_num').val());
+                var sellprice = parseFloat($('#sell_price').val());
+                var sellnum = parseFloat($('#sell_num').val());
+                var buymum = buyprice * buynum;
+                var sellmum = sellprice * sellnum;
+                var myrmb = $("#my_rmb").html();
+                var myxnb = $("#my_xnb").html();
+                var buykenum = 0;
+                var sellkenum = 0;
+                if (myrmb > 0) {
+                    buykenum = myrmb / buyprice;
+                }
+                if (myxnb > 0) {
+                    sellkenum = myxnb;
+                }
+
+                if (buyprice != null && buyprice.toString().split(".") != null && buyprice.toString().split(
+                        ".")[1] != null) {
+                    if (buyprice.toString().split('.')[1].length > price_round) {
+                        $('#buy_price').val(buyprice.toFixed(price_round));
+                    }
+                }
+                if (buynum != null && buynum.toString().split(".") != null && buynum.toString().split(".")[
+                        1] != null) {
+                    if (buynum.toString().split('.')[1].length > num_round) {
+                        $('#buy_num').val(sliceString(buynum, num_round));
+                    }
+                }
+                if (sellprice != null && sellprice.toString().split(".") != null && sellprice.toString().split(
+                        ".")[1] != null) {
+                    if (sellprice.toString().split('.')[1].length > price_round) {
+                        $('#sell_price').val(sellprice.toFixed(price_round));
+                    }
+                }
+                if (sellnum != null && sellnum.toString().split(".") != null && sellnum.toString().split(
+                        ".")[1] != null) {
+                    if (sellnum.toString().split('.')[1].length > num_round) {
+                        $('#sell_num').val(sliceString(sellnum, num_round));
+                    }
+                }
+                if (buymum != null && buymum > 0) {
+                    $('#buy_mum').val(buymum.toFixed(8) * 1);
+                }
+                if (sellmum != null && sellmum > 0) {
+                    $('#sell_mum').val(sellmum.toFixed(8) * 1);
+                }
+                if (buykenum != null && buykenum > 0 && buykenum != 'Infinity') {
+                    $('#buy_max').html(sliceString(buykenum, num_round));
+                }
+                if (sellkenum != null && sellkenum > 0 && sellkenum != 'Infinity') {
+                    $('#sell_max').html(sellkenum);
+                }
+
+            }
+
+            function setMaiRu() {
+                $('#buy_price').val($.trim($('#buy_best_price').html().replace('$', '')));
+                var buyprice = parseFloat($('#buy_price').val());
+                var buynum = parseFloat($('#buy_num').val());
+                var sellprice = parseFloat($('#sell_price').val());
+                var sellnum = parseFloat($('#sell_num').val());
+                var buymum = buyprice * buynum;
+                var sellmum = sellprice * sellnum;
+                var myrmb = $("#my_rmb").html();
+                var myxnb = $("#my_xnb").html();
+                var buykenum = 0;
+                var sellkenum = 0;
+                if (myrmb > 0) {
+                    buykenum = myrmb / buyprice;
+                }
+                if (myxnb > 0) {
+                    sellkenum = myxnb;
+                }
+
+                if (buyprice != null && buyprice.toString().split(".") != null && buyprice.toString().split(
+                        ".")[1] != null) {
+                    if (buyprice.toString().split('.')[1].length > price_round) {
+                        $('#buy_price').val(buyprice.toFixed(price_round));
+                    }
+                }
+                if (buynum != null && buynum.toString().split(".") != null && buynum.toString().split(".")[
+                        1] != null) {
+                    if (buynum.toString().split('.')[1].length > num_round) {
+                        $('#buy_num').val(sliceString(buynum, num_round));
+                    }
+                }
+                if (sellprice != null && sellprice.toString().split(".") != null && sellprice.toString().split(
+                        ".")[1] != null) {
+                    if (sellprice.toString().split('.')[1].length > price_round) {
+                        $('#sell_price').val(sliceString(sellprice, price_round));
+
+                    }
+                }
+
+                if (sellnum != null && sellnum.toString().split(".") != null && sellnum.toString().split(
+                        ".")[1] != null) {
+                    if (sellnum.toString().split('.')[1].length > num_round) {
+                        $('#sell_num').val(sliceString(sellnum, num_round));
+                    }
+                }
+                if (buymum != null && buymum > 0) {
+                    $('#buy_mum').val(buymum.toFixed(8) * 1);
+                }
+                if (sellmum != null && sellmum > 0) {
+                    $('#sell_mum').val(sellmum.toFixed(8) * 1);
+                }
+                if (buykenum != null && buykenum > 0 && buykenum != 'Infinity') {
+                    $('#buy_max').html(sliceString(buykenum, num_round));
+                }
+                if (sellkenum != null && sellkenum > 0 && sellkenum != 'Infinity') {
+                    $('#sell_max').html(sellkenum);
+                }
+
+
+            }
+
+            $('#buy_price,#buy_num,#sell_price,#sell_num').css("ime-mode", "disabled").bind('keyup change',
+                function () { // 监听输入框数据变化
+                    var buyprice = parseFloat($('#buy_price').val());
+                    var buynum = parseFloat($('#buy_num').val());
+                    var sellprice = parseFloat($('#sell_price').val());
+                    var sellnum = parseFloat($('#sell_num').val());
+                    var buymum = buyprice * buynum;
+                    var sellmum = sellprice * sellnum;
+                    var myrmb = $("#my_rmb").html();
+                    var myxnb = $("#my_xnb").html();
+                    var buykenum = 0;
+                    var sellkenum = 0;
+                    if (myrmb > 0) {
+                        buykenum = myrmb / buyprice;
+                    }
+                    if (myxnb > 0) {
+                        sellkenum = myxnb;
+                    }
+
+                    if (buyprice != null && buyprice.toString().split(".") != null && buyprice.toString()
+                            .split(".")[1] != null) {
+
+                        if (buyprice.toString().split('.')[1].length > price_round) {
+
+                            $('#buy_price').val(sliceString(buyprice, price_round));
+
+                        }
+                    }
+                    if (buynum != null && buynum.toString().split(".") != null && buynum.toString().split(
+                            ".")[1] != null) {
+                        if (buynum.toString().split('.')[1].length > num_round) {
+
+                            $('#buy_num').val(sliceString(buynum, num_round));
+                        }
+                    }
+                    if (sellprice != null && sellprice.toString().split(".") != null && sellprice.toString()
+                            .split(".")[1] != null) {
+                        if (sellprice.toString().split('.')[1].length > price_round) {
+                            $('#sell_price').val(sliceString(sellprice, price_round));
+                        }
+                    }
+                    if (sellnum != null && sellnum.toString().split(".") != null && sellnum.toString().split(
+                            ".")[1] != null) {
+                        if (sellnum.toString().split('.')[1].length > num_round) {
+                            $('#sell_num').val(sliceString(sellnum, num_round));
+                        }
+                    }
+                    if (buymum != null && buymum >= 0) {
+                        $('#buy_mum').val(buymum.toFixed(8) * 1);
+                    }
+                    if (sellmum != null && sellmum >= 0) {
+                        $('#sell_mum').val(sellmum.toFixed(8) * 1);
+                    }
+                    if (buykenum != null && buykenum > 0 && buykenum != 'Infinity') {
+                        $('#buy_max').html(toNum(buykenum, num_round));
+                    }
+                    if (sellkenum != null && sellkenum > 0 && sellkenum != 'Infinity') {
+                        $('#sell_max').html(sellkenum);
+                    }
+                }).bind("paste", function () {
+                return false;
+            }).bind("blur", function () {
+                if (this.value.slice(-1) == ".") {
+                    this.value = this.value.slice(0, this.value.length - 1);
+                }
+            }).bind("keypress", function (e) {
+                var code = (e.keyCode ? e.keyCode : e.which); //兼容火狐 IE
+                if (this.value.indexOf(".") == -1) {
+                    return (code >= 48 && code <= 57) || (code == 46);
+                } else {
+                    return code >= 48 && code <= 57
+                }
+            });
+
+        }
+    });
+    new Vue({
+        el: '#app',
+    });
+</script>
+
+<include file="Public:footer"/>
