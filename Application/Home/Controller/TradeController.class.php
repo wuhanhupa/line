@@ -116,9 +116,9 @@ class TradeController extends HomeController
         }
 
         $user = M('User')->where(['id' => userid()])->find();
-       /* if (md5($paypassword) != $user['paypassword']) {
-            $this->error('交易密码错误！');
-        }*/
+        /* if (md5($paypassword) != $user['paypassword']) {
+             $this->error('交易密码错误！');
+         }*/
 
         $pair = M('Market')->where(['name' => $market, 'status' => 1])->find();
         if (!$pair) {
@@ -188,43 +188,34 @@ class TradeController extends HomeController
         } else {
             $this->error('交易类型错误');
         }
-
         if ($pair['trade_min']) {
             if ($mum < $pair['trade_min']) {
                 //$this->error('交易总额不能小于' . $pair['trade_min']);
             }
         }
-
         if ($pair['trade_max']) {
             if ($pair['trade_max'] < $mum) {
                 $this->error('交易总额不能大于' . $pair['trade_max']);
             }
         }
-
         if (!$rmb) {
             $this->error('数据错误1');
         }
-
         if (!$xnb) {
             $this->error('数据错误2');
         }
-
         if (!$market) {
             $this->error('数据错误3');
         }
-
         if (!$price) {
             $this->error('数据错误4');
         }
-
         if (!$num) {
             $this->error('数据错误5');
         }
-
         if (!$mum) {
             $this->error('数据错误6');
         }
-
         if (!$type) {
             $this->error('数据错误7');
         }
@@ -332,7 +323,6 @@ class TradeController extends HomeController
             return ['status' => 0, 'msg' => $msg];
         }
     }
-
 
     protected function createOrderOther($id, $userid, $market, $price, $num, $type)
     {
@@ -576,7 +566,6 @@ class TradeController extends HomeController
     //接收指定交易对
     public function specifiedPair($userId = NULL, $pair = NULL, $price = NULL, $num = NULL, $bidFlag = NULL)
     {
-     
         if (empty($userId)) {
             $info['status'] = 0;
             $info['msg'] = '用户id不能为空';
@@ -631,7 +620,7 @@ class TradeController extends HomeController
         if ($bidFlag == 0) {
             if ($userCoin[$xnb] < $num) {
                 $info['status'] = 0;
-                $info['msg'] = '用户'.$xnb.'虚拟币资产不足';
+                $info['msg'] = '用户' . $xnb . '虚拟币资产不足';
 
                 $this->ajaxReturn($info);
             }

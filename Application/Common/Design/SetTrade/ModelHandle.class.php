@@ -77,7 +77,8 @@ class ModelHandle
         $data['type'] = $type; //交易类型
         $data['fee_buy'] = bcmul(bcmul($num, $price, 8), 0.003, 8); //买入手续费(存法币手续费)
         $data['fee_sell'] = bcmul($num, 0.003, 8); //卖出手续费（存虚拟币手续费）
-
+        $data['sort'] = 0;
+        $data['endtime'] = 0;
         $data['addtime'] = time(); //添加时间
         $data['status'] = 1; //状态
 
