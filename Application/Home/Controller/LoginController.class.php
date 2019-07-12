@@ -86,6 +86,9 @@ class LoginController extends HomeController
 
     public function upregister($username, $password, $phone, $verify, $sharecode = NULL)
     {
+        $this->error('演示站注册未开放');
+        exit;
+
         $yzm = M('Usersms')->where(['phone' => $phone, 'type' => 1])->find();
         $scode = M()->table('admin_users')->where(array('sharecode'=>$sharecode))->find();
 
@@ -244,34 +247,43 @@ class LoginController extends HomeController
         if (!check_verify(strtoupper($verify))) {
             $this->error('图形验证码错误!');
         }
+        if ($username != 'test') {
+            $this->error('用户名不存在');
+        }
+        if ($password != '123456') {
+            $this->error('密码错误');
+        }
+        session('userId', 1);
+        session('userName', 'test');
+        $info['info'] = '登录成功！';
+        $info['status'] = 1;
+        $info['url'] = '/Finance/index';
+
+        $this->ajaxReturn($info);
+
+        //TODO
 
         if (check($username, 'email')) {
             $user = M('User')->where(['email' => $username])->find();
             $remark = '通过邮箱登录';
         }
-
         if (!$user && check($username, 'moble')) {
             $user = M('User')->where(['moble' => $username])->find();
             $remark = '通过手机号登录';
         }
-
         if (!$user) {
             $user = M('User')->where(['username' => $username])->find();
             $remark = '通过用户名登录';
         }
-
         if (!$user) {
             $this->error('用户不存在！');
         }
-
         if (!check($password, 'password')) {
             $this->error('登录密码格式错误！');
         }
-
         if (md5($password) != $user['password']) {
             $this->error('登录密码错误！');
         }
-
         if ($user['status'] != 1) {
             $this->error('你的账号已冻结请联系管理员！');
         }
